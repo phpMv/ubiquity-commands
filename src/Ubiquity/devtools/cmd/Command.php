@@ -20,6 +20,8 @@ class Command {
 
 	protected static $customCommands;
 
+	protected static $customAliases;
+
 	public function __construct($name, $value, $description, $aliases = [], $parameters = [], $examples = []) {
 		$this->name = $name;
 		$this->value = $value;
@@ -516,10 +518,21 @@ class Command {
 			$classes = UIntrospection::getChildClasses('\\Ubiquity\\devtools\\cmd\\commands\\AbstractCustomCommand');
 			foreach ($classes as $class) {
 				$o = new $class();
-				self::$customCommands[$o->getCommand()->getName()] = $o;
+				$cmd = $o->getCommand();
+				self::$customCommands[$cmd->getName()] = $o;
+				$aliases = $cmd->getAliases();
+				if (is_array($aliases)) {
+					foreach ($aliases as $alias) {
+						self::$customAliases[$alias] = $o;
+					}
+				}
 			}
 		}
 		return self::$customCommands;
+	}
+
+	public static function getCustomAliases() {
+		return self::$customAliases;
 	}
 
 	public static function preloadCustomCommands() {
