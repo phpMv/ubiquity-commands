@@ -513,7 +513,7 @@ class Command {
 
 	public static function getCustomCommands() {
 		if (! isset(self::$customCommands)) {
-			$classes = UIntrospection::getChildClasses('\\Ubiquity\\devtools\\cmd\\AbstractCustomCommand');
+			$classes = UIntrospection::getChildClasses('\\Ubiquity\\devtools\\cmd\\commands\\AbstractCustomCommand');
 			foreach ($classes as $class) {
 				$o = new $class();
 				self::$customCommands[$o->getCommand()->getName()] = $o;
