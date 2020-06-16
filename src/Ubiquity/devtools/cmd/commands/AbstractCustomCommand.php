@@ -77,6 +77,15 @@ abstract class AbstractCustomCommand extends AbstractCmd {
 		return $this->command;
 	}
 
-	abstract public function run(&$config, $options, $what, ...$otherArgs);
+	/**
+	 * Run this command.
+	 *
+	 * @param array $config
+	 *        	The Ubiquity application config array.
+	 * @param array $options
+	 * @param string $what
+	 * @param mixed ...$otherArgs
+	 */
+	abstract public function run($config, $options, $what, ...$otherArgs);
 }
 
