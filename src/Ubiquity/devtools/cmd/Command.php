@@ -81,9 +81,11 @@ class Command {
 		if ($cmd != null) {
 			foreach ($commands as $command) {
 				if ($command->getName() == $cmd) {
-					$result[] = [
-						"info" => "Command <b>{$cmd}</b> find by name",
-						"cmd" => $command
+					return [
+						[
+							"info" => "Command <b>{$cmd}</b> find by name",
+							"cmd" => $command
+						]
 					];
 				} elseif (array_search($cmd, $command->getAliases()) !== false) {
 					$result[] = [
@@ -516,9 +518,7 @@ class Command {
 	public static function createCommand() {
 		return new Command("create-command", "commandName", "Creates a new custom command for the devtools.", [
 			"create:command",
-			'add:command',
-			'addCommand',
-			'add-command'
+			'createCommand'
 		], [
 			"v" => Parameter::create("value", "The command value (first parameter).", []),
 			"p" => Parameter::create("parameters", "The command parameters (comma separated).", []),
@@ -556,6 +556,13 @@ class Command {
 		return self::$customCommands;
 	}
 
+	public static function reloadCustomCommands(array $config = []) {
+		self::$customCommands = null;
+		self::$customAliases = [];
+		self::preloadCustomCommands($config);
+		self::getCustomCommands();
+	}
+
 	public static function getCustomAliases() {
 		return self::$customAliases;
 	}
@@ -564,7 +571,7 @@ class Command {
 		$config['cmd-pattern'] ??= 'commands' . \DS . '*.cmd.php';
 		$files = UFileSystem::glob_recursive($config['cmd-pattern']);
 		foreach ($files as $file) {
-			include $file;
+			include_once $file;
 		}
 	}
 
