@@ -513,6 +513,22 @@ class Command {
 		]);
 	}
 
+	public static function createCommand() {
+		return new Command("create-command", "commandName", "Creates a new custom command for the devtools.", [
+			"create:command",
+			'add:command',
+			'addCommand',
+			'add-command'
+		], [
+			"v" => Parameter::create("value", "The command value (first parameter).", []),
+			"p" => Parameter::create("parameters", "The command parameters (comma separated).", []),
+			"d" => Parameter::create("description", "The command description.", []),
+			"a" => Parameter::create("aliases", "The command aliases (comma separated).", [])
+		], [
+			'Creates a new custom command' => 'Ubiquity create-command custom'
+		]);
+	}
+
 	protected static function getCustomCommandInfos() {
 		$result = [];
 		$commands = self::getCustomCommands();
@@ -544,8 +560,9 @@ class Command {
 		return self::$customAliases;
 	}
 
-	public static function preloadCustomCommands() {
-		$files = UFileSystem::glob_recursive("*.cmd.php");
+	public static function preloadCustomCommands(array $config = []) {
+		$config['cmd-pattern'] ??= 'commands' . \DS . '*.cmd.php';
+		$files = UFileSystem::glob_recursive($config['cmd-pattern']);
 		foreach ($files as $file) {
 			include $file;
 		}
@@ -553,7 +570,6 @@ class Command {
 
 	public static function getCommands() {
 		return [
-			...self::getCustomCommandInfos(),
 			self::project(),
 			self::serve(),
 			self::bootstrap(),
@@ -583,7 +599,9 @@ class Command {
 			self::newTheme(),
 			self::mailer(),
 			self::newMail(),
-			self::sendMails()
+			self::sendMails(),
+			self::createCommand(),
+			...self::getCustomCommandInfos()
 		];
 	}
 
