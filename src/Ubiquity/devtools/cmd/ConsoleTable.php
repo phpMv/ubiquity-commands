@@ -2,6 +2,7 @@
 namespace Ubiquity\devtools\cmd;
 
 use Ubiquity\utils\base\UDateTime;
+use Ubiquity\devtools\utils\arrays\ClassicArray;
 
 class ConsoleTable {
 
@@ -64,7 +65,7 @@ class ConsoleTable {
 	private $preserveSpaceBefore = false;
 
 	/**
-	 * Get the printable cell content
+	 * Get the printable cell content.
 	 *
 	 * @param integer $index
 	 *        	The column index
@@ -112,7 +113,7 @@ class ConsoleTable {
 	}
 
 	/**
-	 * mb_str_pad version for multibyte encoding
+	 * mb_str_pad version for multibyte encoding.
 	 *
 	 * @see http://php.net/manual/fr/function.str-pad.php#116244
 	 * @param string $str
@@ -154,7 +155,6 @@ class ConsoleTable {
 		$this->datas = $datas;
 		$this->calculateColWidths();
 		$this->initializeBorders();
-		// $this->removeGrid();
 		$this->factorize();
 	}
 
@@ -286,7 +286,7 @@ class ConsoleTable {
 	}
 
 	/**
-	 * Calculate the maximum width of each column
+	 * Calculate the maximum width of each column.
 	 *
 	 * @return array
 	 */
@@ -356,6 +356,13 @@ class ConsoleTable {
 		$this->borderColor = $borderColor;
 	}
 
+	/**
+	 * Surround the text with a border of the specified color.
+	 *
+	 * @param string $text
+	 * @param string $color
+	 * @return string
+	 */
 	public static function borderColor($text, $color = ConsoleFormatter::LIGHT_GRAY) {
 		$border = new ConsoleTable();
 		$border->setIndent(5);
@@ -365,6 +372,14 @@ class ConsoleTable {
 		return $border->getTable();
 	}
 
+	/**
+	 * Surround the text with a border of the specified type.
+	 *
+	 * @param string $text
+	 * @param string $type
+	 *        	one of error, success, info, warning
+	 * @return string
+	 */
 	public static function borderType($text, $type) {
 		switch ($type) {
 			case 'error':
@@ -392,6 +407,24 @@ class ConsoleTable {
 	 */
 	public function setPreserveSpaceBefore($preserveSpaceBefore) {
 		$this->preserveSpaceBefore = $preserveSpaceBefore;
+	}
+
+	public function __toString() {
+		return $this->getTable();
+	}
+
+	/**
+	 * Return a formated table for displaying the datas.
+	 *
+	 * @param array $datas
+	 * @param ?string $part
+	 * @return \Ubiquity\devtools\cmd\ConsoleTable
+	 */
+	public static function table(array $datas, $part = null) {
+		$tbl = new ConsoleTable();
+		$array = new ClassicArray($datas, $part);
+		$tbl->setDatas($array->parse());
+		return $tbl;
 	}
 }
 

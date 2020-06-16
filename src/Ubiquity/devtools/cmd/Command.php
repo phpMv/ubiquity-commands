@@ -4,6 +4,15 @@ namespace Ubiquity\devtools\cmd;
 use Ubiquity\utils\base\UIntrospection;
 use Ubiquity\utils\base\UFileSystem;
 
+/**
+ * Define a command complete desciption.
+ * Ubiquity\devtools\cmd$Command
+ * This class is part of Ubiquity
+ *
+ * @author jc
+ * @version 1.0.0
+ *
+ */
 class Command {
 
 	protected $name;

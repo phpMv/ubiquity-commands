@@ -4,6 +4,7 @@ namespace Ubiquity\devtools\cmd\commands;
 use Ubiquity\devtools\cmd\Command;
 
 /**
+ * The base class to use for Ubiquity devtools custom commands.
  * Ubiquity\devtools\cmd$AbstractCustomCommand
  * This class is part of Ubiquity
  *
