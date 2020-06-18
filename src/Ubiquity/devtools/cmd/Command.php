@@ -27,17 +27,20 @@ class Command {
 
 	protected $examples;
 
+	protected $category;
+
 	protected static $customCommands;
 
 	protected static $customAliases;
 
-	public function __construct($name, $value, $description, $aliases = [], $parameters = [], $examples = []) {
+	public function __construct($name = '', $value = '', $description = '', $aliases = [], $parameters = [], $examples = [], $category = 'custom') {
 		$this->name = $name;
 		$this->value = $value;
 		$this->description = $description;
 		$this->aliases = $aliases;
 		$this->parameters = $parameters;
 		$this->examples = $examples;
+		$this->category = $category;
 	}
 
 	public function simpleString() {
@@ -145,7 +148,7 @@ class Command {
 			'Creates a new project' => 'Ubiquity new blog',
 			'With admin interface' => 'Ubiquity new blog -a',
 			'and models generation' => 'Ubiquity new blog -a -m -b=blogDB'
-		]);
+		], 'installation');
 	}
 
 	public static function controller() {
@@ -159,7 +162,7 @@ class Command {
 		], [
 			'Creates a controller' => 'Ubiquity controller UserController',
 			'with its associated view' => 'Ubiquity controller UserController -v'
-		]);
+		], 'controllers');
 	}
 
 	public static function model() {
@@ -170,7 +173,7 @@ class Command {
 		], [
 			'Ubiquity model User',
 			'Ubiquity model Author -d=projects'
-		]);
+		], 'models');
 	}
 
 	public static function routes() {
@@ -197,11 +200,11 @@ class Command {
 			'Ubiquity info:routes',
 			'Ubiquity info:routes -type=rest',
 			'Only the routes with the method post' => 'Ubiquity info:routes -type=rest -m=-post'
-		]);
+		], 'router');
 	}
 
 	public static function version() {
-		return new Command("version", "", "Return PHP, Framework and dev-tools versions.");
+		return new Command("version", "", "Return PHP, Framework and dev-tools versions.", [], [], [], 'system');
 	}
 
 	public static function allModels() {
@@ -212,7 +215,7 @@ class Command {
 		], [
 			'Ubiquity all-models',
 			'Ubiquity all-models -d=projects'
-		]);
+		], 'models');
 	}
 
 	public static function clearCache() {
@@ -225,11 +228,11 @@ class Command {
 				"models",
 				"queries",
 				"views"
-			])
+			], 'all')
 		], [
 			'Clear all caches' => 'Ubiquity clear-cache -t=all',
 			'Clear models cache' => 'Ubiquity clear-cache -t=models'
-		]);
+		], 'cache');
 	}
 
 	public static function initCache() {
@@ -239,11 +242,11 @@ class Command {
 				"controllers",
 				"rest",
 				"models"
-			])
+			], 'all')
 		], [
 			'Init all caches' => 'Ubiquity init-cache',
 			'Init models cache' => 'Ubiquity init-cache -t=models'
-		]);
+		], 'cache');
 	}
 
 	public static function serve() {
@@ -258,21 +261,21 @@ class Command {
 		], [
 			'Starts a php server at 127.0.0.1:8090' => 'Ubiquity serve',
 			'Starts a reactPHP server at 127.0.0.1:8080' => 'Ubiquity serve -t=react'
-		]);
+		], 'servers');
 	}
 
 	public static function selfUpdate() {
-		return new Command("self-update", "", "Updates Ubiquity framework for the current project.", [], []);
+		return new Command("self-update", "", "Updates Ubiquity framework for the current project.", [], [], [], 'installation');
 	}
 
 	public static function admin() {
-		return new Command("admin", "", "Add UbiquityMyAdmin webtools to the current project.", [], []);
+		return new Command("admin", "", "Add UbiquityMyAdmin webtools to the current project.", [], [], [], 'installation');
 	}
 
 	public static function help() {
 		return new Command("help", "?", "Get some help about a dev-tools command.", [], [], [
 			'Get some help about crud' => 'Ubiquity help crud'
-		]);
+		], 'system');
 	}
 
 	public static function crudController() {
@@ -303,7 +306,7 @@ class Command {
 			'and associates a route to it' => 'Ubiquity crud CrudUsers -r=User -p=/users',
 			'allows customization of index and form templates' => 'Ubiquity crud CrudUsers -r=User -t=index,form',
 			'Creates a crud controller for the class models\projects\Author' => 'Ubiquity crud Authors -r=models\projects\Author'
-		]);
+		], 'controllers');
 	}
 
 	public static function restController() {
@@ -314,7 +317,7 @@ class Command {
 			"p" => Parameter::create("path", "The associated route", [])
 		], [
 			'Creates a REST controller for the class models\User' => 'Ubiquity rest RestUsers -r=User -p=/rest/users'
-		]);
+		], 'rest');
 	}
 
 	public static function restApiController() {
@@ -324,7 +327,7 @@ class Command {
 			"p" => Parameter::create("path", "The associated route", [])
 		], [
 			'Creates a REST API controller' => 'Ubiquity restapi -p=/rest'
-		]);
+		], 'rest');
 	}
 
 	public static function dao() {
@@ -341,7 +344,7 @@ class Command {
 			'Returns all instances of models\User and includes their commands' => 'Ubiquity dao getAll -r=User -i=commands',
 			'Returns the User with the id 5' => 'Ubiquity dao getOne -c="id=5"-r=User',
 			'Returns the list of users belonging to the "Brittany" or "Normandy" regions' => 'Ubiquity uGetAll -r=User -c="region.name= ? or region.name= ?" -p=Brittany,Normandy'
-		]);
+		], 'models');
 	}
 
 	public static function authController() {
@@ -362,7 +365,7 @@ class Command {
 			'Creates a new controller for authentification' => 'Ubiquity auth AdminAuthController',
 			'and associates a route to it' => 'Ubiquity auth AdminAuthController -p=/admin/auth',
 			'allows customization of index and info templates' => 'Ubiquity auth AdminAuthController -t=index,info'
-		]);
+		], 'controllers');
 	}
 
 	public static function newAction() {
@@ -378,7 +381,7 @@ class Command {
 			'and associates a route to it' => 'Ubiquity action Users.display -p=idUser -r=/users/display/{idUser}',
 			'with multiple parameters' => 'Ubiquity action Users.search -p=name,address',
 			'and create the associated view' => 'Ubiquity action Users.search -p=name,address -v'
-		]);
+		], 'controllers');
 	}
 
 	public static function infoModel() {
@@ -390,7 +393,7 @@ class Command {
 			"f" => Parameter::create("fields", "The fields to display in the table.", [])
 		], [
 			'Gets metadatas for User class' => 'Ubiquity info:model -m=User'
-		]);
+		], 'models');
 	}
 
 	public static function infoModels() {
@@ -403,7 +406,7 @@ class Command {
 			'Gets metadatas for all models' => 'Ubiquity info:models',
 			'Gets metadatas for User and Group models' => 'Ubiquity info:models -m=User,Group',
 			'Gets all primary keys for all models' => 'Ubiquity info:models -f=#primaryKeys'
-		]);
+		], 'models');
 	}
 
 	public static function infoValidation() {
@@ -417,7 +420,7 @@ class Command {
 		], [
 			'Gets validators for User class' => 'Ubiquity info:validation -m=User',
 			'Gets validators for User class on member firstname' => 'Ubiquity info:validation firstname -m=User'
-		]);
+		], 'models');
 	}
 
 	public static function configInfo() {
@@ -429,7 +432,7 @@ class Command {
 		], [
 			'Display all config vars' => 'Ubiquity config',
 			'Display database config vars' => 'Ubiquity config -f=database'
-		]);
+		], 'system');
 	}
 
 	public static function configSet() {
@@ -440,7 +443,7 @@ class Command {
 		], [], [
 			'Assigns a new value to siteURL' => 'Ubiquity config:set --siteURL=http://127.0.0.1/quick-start/',
 			'Change the database name and port' => 'Ubiquity config:set --database.dbName=blog --database.port=3307'
-		]);
+		], 'system');
 	}
 
 	public static function newTheme() {
@@ -455,7 +458,7 @@ class Command {
 		], [
 			'Creates a new theme custom' => 'Ubiquity create-theme custom',
 			'Creates a new theme inheriting from Bootstrap' => 'Ubiquity theme myBootstrap -x=bootstrap'
-		]);
+		], 'gui');
 	}
 
 	public static function installTheme() {
@@ -465,7 +468,7 @@ class Command {
 		], [], [
 			'Creates a new theme custom' => 'Ubiquity theme custom',
 			'Install bootstrap theme' => 'Ubiquity theme bootstrap'
-		]);
+		], 'gui');
 	}
 
 	public static function bootstrap() {
@@ -474,7 +477,7 @@ class Command {
 		], [], [
 			'Bootstrap for dev mode' => 'Ubiquity bootstrap dev',
 			'Bootstrap for prod mode' => 'Ubiquity bootstrap prod'
-		]);
+		], 'servers');
 	}
 
 	public static function composer() {
@@ -484,7 +487,7 @@ class Command {
 			'composer update' => 'Ubiquity composer update',
 			'composer update with no-dev' => 'Ubiquity composer nodev',
 			'composer optimization for production' => 'Ubiquity composer optimize'
-		]);
+		], 'system');
 	}
 
 	public static function mailer() {
@@ -492,7 +495,7 @@ class Command {
 			'Display mailer classes' => 'Ubiquity mailer classes',
 			'Display mailer messages in queue(To send)' => 'Ubiquity mailer queue',
 			'Display mailer messages in dequeue(sent)' => 'Ubiquity mailer dequeue'
-		]);
+		], 'mailer');
 	}
 
 	public static function sendMails() {
@@ -503,7 +506,7 @@ class Command {
 		], [
 			'Send all messages to send from queue' => 'Ubiquity semdmails',
 			'Send the first message in queue' => 'Ubiquity sendmail 1'
-		]);
+		], 'mailer');
 	}
 
 	public static function newMail() {
@@ -512,7 +515,7 @@ class Command {
 			"new:mail"
 		], [], [
 			'Creates a new mailer class' => 'Ubiquity newMail InformationMail'
-		]);
+		], 'mailer');
 	}
 
 	public static function createCommand() {
@@ -526,14 +529,16 @@ class Command {
 			"a" => Parameter::create("aliases", "The command aliases (comma separated).", [])
 		], [
 			'Creates a new custom command' => 'Ubiquity create-command custom'
-		]);
+		], 'system');
 	}
 
 	protected static function getCustomCommandInfos() {
 		$result = [];
 		$commands = self::getCustomCommands();
-		foreach ($commands as $o) {
-			$result[] = $o->getCommand();
+		if (is_array($commands)) {
+			foreach ($commands as $o) {
+				$result[] = $o->getCommand();
+			}
 		}
 		return $result;
 	}
@@ -577,33 +582,34 @@ class Command {
 
 	public static function getCommands() {
 		return [
+			self::initCache(),
+			self::clearCache(),
+			self::controller(),
+			self::newAction(),
+			self::authController(),
+			self::crudController(),
+			self::newTheme(),
+			self::installTheme(),
+
 			self::project(),
 			self::serve(),
 			self::bootstrap(),
 			self::help(),
 			self::version(),
-			self::controller(),
 			self::model(),
 			self::allModels(),
 			self::dao(),
-			self::clearCache(),
-			self::initCache(),
 			self::selfUpdate(),
 			self::composer(),
 			self::admin(),
-			self::crudController(),
-			self::authController(),
 			self::restController(),
 			self::restApiController(),
-			self::newAction(),
 			self::routes(),
 			self::infoModel(),
 			self::infoModels(),
 			self::infoValidation(),
 			self::configInfo(),
 			self::configSet(),
-			self::installTheme(),
-			self::newTheme(),
 			self::mailer(),
 			self::newMail(),
 			self::sendMails(),
@@ -650,5 +656,37 @@ class Command {
 	 */
 	public function getParameters() {
 		return $this->parameters;
+	}
+
+	/**
+	 *
+	 * @return mixed
+	 */
+	public function getCategory() {
+		return $this->category;
+	}
+
+	/**
+	 *
+	 * @param mixed $category
+	 */
+	public function setCategory($category) {
+		$this->category = $category;
+	}
+
+	public function hasParameters() {
+		return count($this->parameters) > 0;
+	}
+
+	public function hasValue() {
+		return $this->value != null;
+	}
+
+	public function isImmediate() {
+		return ! $this->hasParameters() && ! $this->hasValue();
+	}
+
+	public function __toString() {
+		return $this->name;
 	}
 }
