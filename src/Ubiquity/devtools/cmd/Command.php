@@ -580,6 +580,22 @@ class Command {
 		}
 	}
 
+	public static function getCommandNames(array $excludedCategories = [
+		'installation' => false,
+		'servers' => false
+	], $excludedCommands = []) {
+		$result = [];
+		$commands = self::getCommands();
+		foreach ($commands as $command) {
+			$cat = $command->getCategory();
+			$commandName = $command->getName();
+			if (! isset($excludedCommands[$commandName]) && ! isset($excludedCategories[$cat])) {
+				$result[] = $commandName;
+			}
+		}
+		return $result;
+	}
+
 	public static function getCommands() {
 		return [
 			self::initCache(),
