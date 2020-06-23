@@ -20,7 +20,7 @@ class Parameter {
 
 	protected $defaultValue;
 
-	public function __construct($name, $description, $values, $defaultValue = "") {
+	public function __construct($name = '', $description = '', $values = [], $defaultValue = "") {
 		$this->name = $name;
 		$this->description = $description;
 		$this->values = $values;

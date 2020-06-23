@@ -158,7 +158,7 @@ class Command {
 			"v" => Parameter::create("views", "creates an associated view folder", [
 				"true",
 				"false"
-			])
+			], 'false')
 		], [
 			'Creates a controller' => 'Ubiquity controller UserController',
 			'with its associated view' => 'Ubiquity controller UserController -v'
@@ -197,8 +197,8 @@ class Command {
 				'patch'
 			])
 		], [
-			'Ubiquity info:routes',
-			'Ubiquity info:routes -type=rest',
+			'All routes' => 'Ubiquity info:routes',
+			'Rest routes' => 'Ubiquity info:routes -type=rest',
 			'Only the routes with the method post' => 'Ubiquity info:routes -type=rest -m=-post'
 		], 'router');
 	}
@@ -256,7 +256,8 @@ class Command {
 			"t" => Parameter::create("type", "Sets the server type.", [
 				'php',
 				'react',
-				'swoole'
+				'swoole',
+				'roadrunner'
 			], 'php')
 		], [
 			'Starts a php server at 127.0.0.1:8090' => 'Ubiquity serve',
@@ -374,7 +375,10 @@ class Command {
 		], [
 			"p" => Parameter::create("params", "The action parameters (or arguments)", []),
 			"r" => Parameter::create("route", "The associated route path", []),
-			"v" => Parameter::create("create-view", "Creates the associated view", [], "false")
+			"v" => Parameter::create("create-view", "Creates the associated view", [
+				"true",
+				"false"
+			], "false")
 		], [
 			'Adds the action all in controller Users' => 'Ubiquity action Users.all',
 			'Adds the action display in controller Users with a parameter' => 'Ubiquity action Users.display -p=idUser',
@@ -388,7 +392,10 @@ class Command {
 		return new Command("info:model", "infoType", "Returns the model meta datas.", [
 			"info-model"
 		], [
-			"s" => Parameter::create("separate", "If true, returns each info in a separate table", []),
+			"s" => Parameter::create("separate", "If true, returns each info in a separate table", [
+				"true",
+				"false"
+			], "false"),
 			"m" => Parameter::create("model", "The model on which the information is sought.", []),
 			"f" => Parameter::create("fields", "The fields to display in the table.", [])
 		], [
@@ -415,7 +422,10 @@ class Command {
 			"info:validators",
 			"info-validators"
 		], [
-			"s" => Parameter::create("separate", "If true, returns each info in a separate table", []),
+			"s" => Parameter::create("separate", "If true, returns each info in a separate table", [
+				'true',
+				'false'
+			], 'false'),
 			"m" => Parameter::create("model", "The model on which the information is sought.", [])
 		], [
 			'Gets validators for User class' => 'Ubiquity info:validation -m=User',
@@ -672,6 +682,14 @@ class Command {
 	 */
 	public function getParameters() {
 		return $this->parameters;
+	}
+
+	/**
+	 *
+	 * @return mixed
+	 */
+	public function getExamples() {
+		return $this->examples;
 	}
 
 	/**
