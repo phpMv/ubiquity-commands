@@ -19,10 +19,10 @@ abstract class AbstractCustomCommand extends AbstractCmd {
 	 *
 	 * @var Command
 	 */
-	private $command;
+	protected $command;
 
 	public function __construct() {
-		$this->command = new Command($this->getName(), $this->getValue(), $this->getDescription(), $this->getAliases(), $this->getParameters(), $this->getExamples());
+		$this->command = new Command($this->getName(), $this->getValue(), $this->getDescription(), $this->getAliases(), $this->getParameters(), $this->getExamples(), $this->getCategory());
 	}
 
 	/**
@@ -67,6 +67,15 @@ abstract class AbstractCustomCommand extends AbstractCmd {
 	 * @return array
 	 */
 	abstract protected function getExamples(): array;
+
+	/**
+	 * Return the command category.
+	 *
+	 * @return string
+	 */
+	protected function getCategory() {
+		return 'custom';
+	}
 
 	/**
 	 * Return the command informations.
