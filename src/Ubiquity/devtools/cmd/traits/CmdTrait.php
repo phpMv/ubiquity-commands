@@ -117,7 +117,7 @@ trait CmdTrait {
 				$classname = $prefix . "\\" . $classname;
 			}
 		}
-		return $classname;
+		return str_replace("\\\\", "\\", $classname);
 	}
 
 	protected static function getSelectedModels($models, $config) {
