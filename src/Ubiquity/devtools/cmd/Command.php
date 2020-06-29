@@ -389,7 +389,7 @@ class Command {
 	}
 
 	public static function infoModel() {
-		return new Command("info:model", "infoType", "Returns the model meta datas.", [
+		return new Command("info:model", "?infoType", "Returns the model meta datas.", [
 			"info-model"
 		], [
 			"s" => Parameter::create("separate", "If true, returns each info in a separate table", [
@@ -417,7 +417,7 @@ class Command {
 	}
 
 	public static function infoValidation() {
-		return new Command("info:validation", "memberName", "Returns the models validation info.", [
+		return new Command("info:validation", "?memberName", "Returns the models validation info.", [
 			"info-validation",
 			"info:validators",
 			"info-validators"
@@ -665,7 +665,14 @@ class Command {
 	 * @return mixed
 	 */
 	public function getValue() {
+		if ($this->value != null) {
+			return ltrim($this->value, '?');
+		}
 		return $this->value;
+	}
+
+	public function hasRequiredValue() {
+		return $this->value != null && \substr($this->value, 0, 1) !== '?';
 	}
 
 	/**
