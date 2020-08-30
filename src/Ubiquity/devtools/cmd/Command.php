@@ -169,10 +169,12 @@ class Command {
 		return new Command("model", "tableName", "Generates a new model.", [
 			"create-model"
 		], [
-			'd' => Parameter::create('database', 'The database connection to use', [], 'default')
+			'd' => Parameter::create('database', 'The database connection to use', [], 'default'),
+			'a' => Parameter::create('access', 'The default access to the class members', [], 'private')
 		], [
 			'Ubiquity model User',
-			'Ubiquity model Author -d=projects'
+			'Ubiquity model Author -d=projects',
+			'Ubiquity model Author -d=projects -a=protected'
 		], 'models');
 	}
 
@@ -211,10 +213,12 @@ class Command {
 		return new Command("all-models", "", "Generates all models from database.", [
 			"create-all-models"
 		], [
-			'd' => Parameter::create('database', 'The database connection to use', [], 'default')
+			'd' => Parameter::create('database', 'The database connection to use', [], 'default'),
+			'a' => Parameter::create('access', 'The default access to the class members', [], 'private')
 		], [
 			'Ubiquity all-models',
-			'Ubiquity all-models -d=projects'
+			'Ubiquity all-models -d=projects',
+			'Ubiquity all-models -d=projects -a=protected'
 		], 'models');
 	}
 
