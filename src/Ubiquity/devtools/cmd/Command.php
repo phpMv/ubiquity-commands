@@ -213,7 +213,7 @@ class Command {
 		return new Command("all-models", "", "Generates all models from database.", [
 			"create-all-models"
 		], [
-			'd' => Parameter::create('database', 'The database connection to use', [], 'default'),
+			'd' => Parameter::create('database', 'The database connection to use (offset)', [], 'default'),
 			'a' => Parameter::create('access', 'The default access to the class members', [], 'private')
 		], [
 			'Ubiquity all-models',
@@ -411,10 +411,12 @@ class Command {
 		return new Command("info:models", "", "Returns the models meta datas.", [
 			"info-models"
 		], [
+			'd' => Parameter::create('database', 'The database connection to use (offset)', [], 'default'),
 			"m" => Parameter::create("models", "The models on which the information is sought.", []),
 			"f" => Parameter::create("fields", "The fields to display in the table.", [])
 		], [
-			'Gets metadatas for all models' => 'Ubiquity info:models',
+			'Gets metadatas for all models in default db' => 'Ubiquity info:models',
+			'Gets metadatas for all models in messagerie db' => 'Ubiquity info:models -d=messagerie',
 			'Gets metadatas for User and Group models' => 'Ubiquity info:models -m=User,Group',
 			'Gets all primary keys for all models' => 'Ubiquity info:models -f=#primaryKeys'
 		], 'models');
