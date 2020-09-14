@@ -560,16 +560,18 @@ class Command {
 	}
 
 	public static function getCustomCommands() {
-		if (! isset(self::$customCommands)) {
-			$classes = UIntrospection::getChildClasses('\\Ubiquity\\devtools\\cmd\\commands\\AbstractCustomCommand');
-			foreach ($classes as $class) {
-				$o = new $class();
-				$cmd = $o->getCommand();
-				self::$customCommands[$cmd->getName()] = $o;
-				$aliases = $cmd->getAliases();
-				if (is_array($aliases)) {
-					foreach ($aliases as $alias) {
-						self::$customAliases[$alias] = $o;
+		if (\class_exists(\Ubiquity\utils\base\UIntrospection::class)) {
+			if (! isset(self::$customCommands)) {
+				$classes = UIntrospection::getChildClasses('\\Ubiquity\\devtools\\cmd\\commands\\AbstractCustomCommand');
+				foreach ($classes as $class) {
+					$o = new $class();
+					$cmd = $o->getCommand();
+					self::$customCommands[$cmd->getName()] = $o;
+					$aliases = $cmd->getAliases();
+					if (is_array($aliases)) {
+						foreach ($aliases as $alias) {
+							self::$customAliases[$alias] = $o;
+						}
 					}
 				}
 			}
@@ -578,10 +580,12 @@ class Command {
 	}
 
 	public static function reloadCustomCommands(array $config = []) {
-		self::$customCommands = null;
-		self::$customAliases = [];
-		self::preloadCustomCommands($config);
-		self::getCustomCommands();
+		if (\class_exists(\Ubiquity\utils\base\UIntrospection::class)) {
+			self::$customCommands = null;
+			self::$customAliases = [];
+			self::preloadCustomCommands($config);
+			self::getCustomCommands();
+		}
 	}
 
 	public static function getCustomAliases() {
@@ -589,10 +593,12 @@ class Command {
 	}
 
 	public static function preloadCustomCommands(array $config = []) {
-		$config['cmd-pattern'] ??= 'commands' . \DS . '*.cmd.php';
-		$files = UFileSystem::glob_recursive($config['cmd-pattern']);
-		foreach ($files as $file) {
-			include_once $file;
+		if (\class_exists(\Ubiquity\utils\base\UIntrospection::class)) {
+			$config['cmd-pattern'] ??= 'commands' . \DS . '*.cmd.php';
+			$files = UFileSystem::glob_recursive($config['cmd-pattern']);
+			foreach ($files as $file) {
+				include_once $file;
+			}
 		}
 	}
 
