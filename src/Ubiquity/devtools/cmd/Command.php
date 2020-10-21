@@ -548,6 +548,15 @@ class Command {
 		], 'system');
 	}
 
+	public static function initAcls() {
+		return new Command('init-acls', '', 'Initialize Acls defined with annotations in controllers.', [
+			'init:acls',
+			'initAcls'
+		], [], [
+			'Initialize Acls' => 'Ubiquity initAcls'
+		], 'security');
+	}
+
 	protected static function getCustomCommandInfos() {
 		$result = [];
 		$commands = self::getCustomCommands();
@@ -652,6 +661,7 @@ class Command {
 			self::newMail(),
 			self::sendMails(),
 			self::createCommand(),
+			self::initAcls(),
 			...self::getCustomCommandInfos()
 		];
 	}
