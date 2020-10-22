@@ -549,11 +549,29 @@ class Command {
 	}
 
 	public static function initAcls() {
-		return new Command('init-acls', '', 'Initialize Acls defined with annotations in controllers.', [
-			'init:acls',
-			'initAcls'
+		return new Command('acl-init', '', 'Initialize Acls defined with annotations in controllers.', [
+			'acl:init',
+			'aclInit'
 		], [], [
-			'Initialize Acls' => 'Ubiquity initAcls'
+			'Initialize Acls' => 'Ubiquity aclInit'
+		], 'security');
+	}
+
+	public static function displayAcls() {
+		return new Command('acl-display', '', 'Display Acls defined with annotations in controllers.', [
+			'acl:display',
+			'aclDisplay'
+		], [
+			"v" => Parameter::create("value", "The ACL part to display.", [
+				'all',
+				'role',
+				'resource',
+				'permission',
+				'map',
+				'acl'
+			], 'acl')
+		], [
+			'Display all defined roles with ACL annotations' => 'Ubiquity aclDisplay role'
 		], 'security');
 	}
 
@@ -662,6 +680,7 @@ class Command {
 			self::sendMails(),
 			self::createCommand(),
 			self::initAcls(),
+			self::displayAcls(),
 			...self::getCustomCommandInfos()
 		];
 	}
