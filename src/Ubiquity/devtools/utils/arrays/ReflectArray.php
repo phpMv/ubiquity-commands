@@ -18,6 +18,9 @@ class ReflectArray extends BaseArray {
 				]
 			];
 		}
+		if (! is_object($object)) {
+			$object = (object) $object;
+		}
 		if (! is_array($this->properties)) {
 			$this->properties = $this->getProperties($object);
 		}
@@ -48,15 +51,15 @@ class ReflectArray extends BaseArray {
 	}
 
 	private function parseValue($value) {
-		$result = "-";
-		if (is_array($value)) {
+		$result = '-';
+		if (\is_array($value)) {
 			return $this->parseArray($value);
 		} elseif (UString::isValid($value)) {
-			$result = var_export($value, true);
-		} elseif (is_callable($value)) {
+			$result = $value;
+		} elseif (\is_callable($value)) {
 			$result = '(x)=>{}';
 		} else {
-			$result = $value;
+			$result = \var_export($value, true);
 		}
 		return $result;
 	}

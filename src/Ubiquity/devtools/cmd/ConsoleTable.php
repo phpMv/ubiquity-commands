@@ -3,6 +3,7 @@ namespace Ubiquity\devtools\cmd;
 
 use Ubiquity\utils\base\UDateTime;
 use Ubiquity\devtools\utils\arrays\ClassicArray;
+use Ubiquity\utils\base\UString;
 
 class ConsoleTable {
 
@@ -304,7 +305,7 @@ class ConsoleTable {
 					if ($col instanceof \DateTime) {
 						$col = UDateTime::elapsed($col);
 					}
-					if (is_string($col)) {
+					if (UString::isValid($col)) {
 						$lines = explode("\n", $col);
 						$size = sizeof($lines);
 						if ($size > $this->rowHeight[$y]) {
