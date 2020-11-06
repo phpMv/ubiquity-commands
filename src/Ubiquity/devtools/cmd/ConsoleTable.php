@@ -1,9 +1,7 @@
 <?php
 namespace Ubiquity\devtools\cmd;
 
-use Ubiquity\utils\base\UDateTime;
 use Ubiquity\devtools\utils\arrays\ClassicArray;
-use Ubiquity\utils\base\UString;
 
 class ConsoleTable {
 
@@ -182,7 +180,7 @@ class ConsoleTable {
 		foreach ($row as $col) {
 			if ($col instanceof \DateTime) {
 				$lines = [
-					UDateTime::elapsed($col)
+					\Ubiquity\utils\base\UDateTime::elapsed($col)
 				];
 			} else {
 				$lines = \explode("\n", $col);
@@ -303,9 +301,9 @@ class ConsoleTable {
 				$this->rowHeight[$y] = 1;
 				foreach ($row as $col) {
 					if ($col instanceof \DateTime) {
-						$col = UDateTime::elapsed($col);
+						$col = \Ubiquity\utils\base\UDateTime::elapsed($col);
 					}
-					if (UString::isValid($col)) {
+					if (\is_scalar($col) || (\is_object($col) && \method_exists($col, '__toString'))) {
 						$lines = explode("\n", $col);
 						$size = sizeof($lines);
 						if ($size > $this->rowHeight[$y]) {
