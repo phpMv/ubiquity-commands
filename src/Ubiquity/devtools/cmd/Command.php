@@ -244,6 +244,7 @@ class Command {
 			"t" => Parameter::create("type", "Defines the type of cache to create.", [
 				"all",
 				"controllers",
+				"acls",
 				"rest",
 				"models"
 			], 'all')
