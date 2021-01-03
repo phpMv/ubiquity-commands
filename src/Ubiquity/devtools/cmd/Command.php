@@ -593,9 +593,6 @@ class Command {
 				$result[] = $o->getCommand();
 			}
 		}
-		if(\class_exists('\\Ubiquity\\security\\data\\EncryptionManager',true)){
-			$result[]=self::newEncryptionKey();
-		}
 		return $result;
 	}
 
@@ -694,6 +691,7 @@ class Command {
 			self::createCommand(),
 			self::initAcls(),
 			self::displayAcls(),
+			self::newEncryptionKey(),
 			...self::getCustomCommandInfos()
 		];
 	}
