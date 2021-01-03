@@ -575,6 +575,15 @@ class Command {
 			'Display all defined roles with ACL annotations' => 'Ubiquity aclDisplay role'
 		], 'security');
 	}
+	
+	public static function newEncryptionKey(){
+		return new Command('new-key', 'cypher', 'Generate a new encryption key using a cipher.', [
+			'new:key',
+			'newKey'
+		], [], [
+			'Generate a key for AES-128' => 'Ubiquity new-key 128'
+		], 'security');
+	}
 
 	protected static function getCustomCommandInfos() {
 		$result = [];
@@ -583,6 +592,9 @@ class Command {
 			foreach ($commands as $o) {
 				$result[] = $o->getCommand();
 			}
+		}
+		if(\class_exists('\\Ubiquity\\security\\data\\EncryptionManager',true)){
+			$result[]=self::newEncryptionKey();
 		}
 		return $result;
 	}
