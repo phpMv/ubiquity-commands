@@ -19,6 +19,7 @@ class Debug {
 			return '<script>document.write(\'<script src="http://\' + (location.host || \'localhost\').split(\':\')[0] +
 				\':' . $port . '/livereload.js?snipver=2"></\' + \'script>\')</script>';
 		}
+		return '';
 	}
 	
 	public static function hasLiveReload():bool{
