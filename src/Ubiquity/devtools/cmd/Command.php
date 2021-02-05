@@ -10,7 +10,7 @@ use Ubiquity\utils\base\UFileSystem;
  * This class is part of Ubiquity
  *
  * @author jc
- * @version 1.0.0
+ * @version 1.0.2
  *
  */
 class Command {
@@ -267,6 +267,17 @@ class Command {
 		], [
 			'Starts a php server at 127.0.0.1:8090' => 'Ubiquity serve',
 			'Starts a reactPHP server at 127.0.0.1:8080' => 'Ubiquity serve -t=react'
+		], 'servers');
+	}
+	
+	public static function liveReload() {
+		return new Command("livereload", "path", "Start the live reload server.", ['live-reload','live'], [
+			"p" => Parameter::create("port", "Sets the listen port number.", [], 35729),
+			"i" => Parameter::create("include", "Include file matching pattern .", []),
+			"e" => Parameter::create("exclude", "Exclude file matching pattern .", [])
+		], [
+			'Starts the live-reload server at 127.0.0.1:35729' => 'Ubiquity live-reload',
+			'Starts the live-reload server at 127.0.0.1:35800 excluding log files' => 'Ubiquity live-reload -p=35800 -e=logs/*'
 		], 'servers');
 	}
 
@@ -668,6 +679,7 @@ class Command {
 
 			self::project(),
 			self::serve(),
+			self::liveReload(),
 			self::bootstrap(),
 			self::help(),
 			self::version(),

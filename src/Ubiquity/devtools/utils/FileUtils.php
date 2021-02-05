@@ -67,6 +67,6 @@ class FileUtils {
 						$path=$path.DS;
 					}
 		}
-		return $path;
+		return \realpath($path);
 	}
 }
