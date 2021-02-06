@@ -258,6 +258,8 @@ class Command {
 		return new Command("serve", "", "Start a web server.", [], [
 			"h" => Parameter::create("host", "Sets the host ip address.", [], '127.0.0.1'),
 			"p" => Parameter::create("port", "Sets the listen port number.", [], 8090),
+			"n" => Parameter::create("nolr", "Starts without live-reload.", [], false),
+			"l" => Parameter::create("lrport", "Sets the live-reload listen port number.", [], 35729),
 			"t" => Parameter::create("type", "Sets the server type.", [
 				'php',
 				'react',
@@ -273,11 +275,11 @@ class Command {
 	public static function liveReload() {
 		return new Command("livereload", "path", "Start the live reload server.", ['live-reload','live'], [
 			"p" => Parameter::create("port", "Sets the listen port number.", [], 35729),
-			"i" => Parameter::create("include", "Include file matching pattern .", []),
-			"e" => Parameter::create("exclude", "Exclude file matching pattern .", [])
+			"e" => Parameter::create("exts", "Specify extentions to observe .", [],'php,html'),
+			"x" => Parameter::create("exclusions", "Exclude file matching pattern .", [],'cache/,logs/')
 		], [
 			'Starts the live-reload server at 127.0.0.1:35729' => 'Ubiquity live-reload',
-			'Starts the live-reload server at 127.0.0.1:35800 excluding log files' => 'Ubiquity live-reload -p=35800 -e=logs/*'
+			'Starts the live-reload server at 127.0.0.1:35800 excluding logs directory' => 'Ubiquity live-reload -p=35800 -x=logs/'
 		], 'servers');
 	}
 

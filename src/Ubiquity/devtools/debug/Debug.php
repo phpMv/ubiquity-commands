@@ -23,8 +23,9 @@ class Debug {
 	}
 	
 	public static function hasLiveReload():bool{
-		\exec('livereloadx --version', $foo, $exitCode);
-		return $exitCode === 0;
+		$exitCode=0;
+		\exec('livereload --version', $_, $exitCode);
+		return $exitCode == 1;
 	}
 
 }
