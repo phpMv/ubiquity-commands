@@ -543,9 +543,24 @@ class Command {
 		return new Command("new-mail", "name", "Creates a new mailer class.", [
 			"newMail",
 			"new:mail"
-		], [], [
+		], [
+			"p" => Parameter::create("parent", "The class parent.", [],'\\Ubiquity\\mailer\\AbstractMail'),
+			"v" => Parameter::create("view", "Add the associated view.", [],false)
+		], [
 			'Creates a new mailer class' => 'Ubiquity newMail InformationMail'
 		], 'mailer');
+	}
+	
+	public static function newClass() {
+		return new Command("new-class", "name", "Creates a new class.", [
+			"newClass",
+			"new:class",
+			"class"
+		], [
+			"p" => Parameter::create("parent", "The class parent.")
+		], [
+			'Creates a new class' => 'Ubiquity class services.OrgaRepository'
+		], 'controllers');
 	}
 
 	public static function createCommand() {
@@ -676,6 +691,7 @@ class Command {
 			self::newAction(),
 			self::authController(),
 			self::crudController(),
+			self::newClass(),
 			self::newTheme(),
 			self::installTheme(),
 
