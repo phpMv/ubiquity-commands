@@ -22,10 +22,10 @@ class FileUtils {
 	}
 
 	public static function xcopy($source, $dest, $permissions = 0755){
-	    $path = pathinfo($dest);
-	    if (!file_exists($path['dirname'])) {
-	        mkdir($path['dirname'], 0777, true);
-	    } 
+		$path = pathinfo($dest);
+		if (!file_exists($path['dirname'])) {
+			mkdir($path['dirname'], 0777, true);
+		} 
 		if (is_link($source)) {
 			return symlink(readlink($source), $dest);
 		}
@@ -68,5 +68,17 @@ class FileUtils {
 					}
 		}
 		return \realpath($path);
+	}
+	
+	public static function systemCommandExists($command) :bool {
+		$windows = \strpos(PHP_OS, 'WIN') === 0;
+		$test = $windows ? 'where' : 'command -v';
+		$commands=explode("\n",\trim(\shell_exec("$test $command")));
+		foreach ($commands as $cmd){
+			if($cmd!=null && \file_exists($cmd)){
+				return true;
+			}
+		}
+		return false;
 	}
 }
