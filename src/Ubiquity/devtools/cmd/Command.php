@@ -557,7 +557,7 @@ class Command {
 			"new:class",
 			"class"
 		], [
-			"p" => Parameter::create("parent", "The class parent.")
+			"p" => Parameter::create("parent", "The class parent.",[])
 		], [
 			'Creates a new class' => 'Ubiquity class services.OrgaRepository'
 		], 'controllers');
