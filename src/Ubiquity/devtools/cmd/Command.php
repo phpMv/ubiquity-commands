@@ -329,8 +329,8 @@ class Command {
 	}
 	
 	public static function indexCrudController() {
-	    return new Command("index-crud", "crudControllerName", "Creates a new index-CRUD controller.", [
-	        "index-crud-controller"
+	    return new Command("crud-index", "crudControllerName", "Creates a new index-CRUD controller.", [
+	        "crud-index-controller"
 	    ], [
 	        "d" => Parameter::create("datas", "The associated Datas class", [
 	            "true",
@@ -347,11 +347,13 @@ class Command {
 	        "t" => Parameter::create("templates", "The templates to modify", [
 	            "index",
 	            "form",
-	            "display"
-	        ], "index,form,display"),
+	            "display",
+	            "item",
+	            "itemHome"
+	        ], "index,form,display,item,itemHome"),
 	        "p" => Parameter::create("path", "The associated route", ['{resource}'])
 	    ], [
-	        'Creates an index crud controller' => 'Ubiquity index-crud MainCrud -r=crud/{resource}',
+	        'Creates an index crud controller' => 'Ubiquity crud-index MainCrud -p=crud/{resource}',
 	        'allows customization of index and form templates' => 'Ubiquity index-crud MainCrud -t=index,form'
 	    ], 'controllers');
 	}
