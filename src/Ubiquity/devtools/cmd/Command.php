@@ -327,6 +327,34 @@ class Command {
 			'Creates a crud controller for the class models\projects\Author' => 'Ubiquity crud Authors -r=models\projects\Author'
 		], 'controllers');
 	}
+	
+	public static function indexCrudController() {
+	    return new Command("index-crud", "crudControllerName", "Creates a new index-CRUD controller.", [
+	        "index-crud-controller"
+	    ], [
+	        "d" => Parameter::create("datas", "The associated Datas class", [
+	            "true",
+	            "false"
+	        ], "true"),
+	        "v" => Parameter::create("viewer", "The associated Viewer class", [
+	            "true",
+	            "false"
+	        ], "true"),
+	        "e" => Parameter::create("events", "The associated Events class", [
+	            "true",
+	            "false"
+	        ], "true"),
+	        "t" => Parameter::create("templates", "The templates to modify", [
+	            "index",
+	            "form",
+	            "display"
+	        ], "index,form,display"),
+	        "p" => Parameter::create("path", "The associated route", ['{resource}'])
+	    ], [
+	        'Creates an index crud controller' => 'Ubiquity index-crud MainCrud -r=crud/{resource}',
+	        'allows customization of index and form templates' => 'Ubiquity index-crud MainCrud -t=index,form'
+	    ], 'controllers');
+	}
 
 	public static function restController() {
 		return new Command("rest", "restControllerName", "Creates a new REST controller.", [
@@ -690,6 +718,7 @@ class Command {
 			self::controller(),
 			self::newAction(),
 			self::authController(),
+		    self::indexCrudController(),
 			self::crudController(),
 			self::newClass(),
 			self::newTheme(),
