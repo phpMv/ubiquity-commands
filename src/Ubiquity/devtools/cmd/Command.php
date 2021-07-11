@@ -350,7 +350,7 @@ class Command {
 	            "display",
 	            "item",
 	            "itemHome"
-	        ], "index,form,display,item,itemHome"),
+	        ], "index,form,display,home,itemHome"),
 	        "p" => Parameter::create("path", "The associated route", ['{resource}'])
 	    ], [
 	        'Creates an index crud controller' => 'Ubiquity crud-index MainCrud -p=crud/{resource}',
