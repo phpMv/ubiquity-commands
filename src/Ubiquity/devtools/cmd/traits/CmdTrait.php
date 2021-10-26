@@ -110,12 +110,10 @@ trait CmdTrait {
 	}
 
 	protected static function getCompleteClassname($config, $classname, $type = 'models') {
-		$prefix = $config["mvcNS"][$type] ?? null;
+		$prefix = Startup::getNS($type);
 		$classname = \ltrim($classname, "\\");
-		if (isset($prefix)) {
-			if (! UString::startswith($classname, $prefix)) {
-				$classname = $prefix . "\\" . $classname;
-			}
+		if (! UString::startswith($classname, $prefix)) {
+			$classname = $prefix . $classname;
 		}
 		return str_replace("\\\\", "\\", $classname);
 	}
