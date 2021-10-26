@@ -140,6 +140,7 @@ trait CmdTrait {
 		if ($domain != '') {
 			DDDManager::setDomain($domain);
 		}
+		return $domain;
 	}
 }
 
