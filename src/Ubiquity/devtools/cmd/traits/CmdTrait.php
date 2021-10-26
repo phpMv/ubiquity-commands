@@ -3,8 +3,10 @@ namespace Ubiquity\devtools\cmd\traits;
 
 use Ubiquity\devtools\cmd\ConsoleFormatter;
 use Ubiquity\cache\CacheManager;
+use Ubiquity\domains\DDDManager;
 use Ubiquity\devtools\cmd\Console;
 use Ubiquity\utils\base\UString;
+use Ubiquity\controllers\Startup;
 
 trait CmdTrait {
 
@@ -131,6 +133,13 @@ trait CmdTrait {
 			return $result;
 		}
 		return null;
+	}
+
+	protected static function updateDomain($options) {
+		$domain = self::getOption($options, 'o', 'domain', '');
+		if ($domain != '') {
+			DDDManager::setDomain($domain);
+		}
 	}
 }
 
