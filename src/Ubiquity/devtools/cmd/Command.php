@@ -159,7 +159,7 @@ class Command {
 				"true",
 				"false"
 			], 'false'),
-			'o' => Parameter::create('domain', 'The domain in which to create the controller.', '')
+			'o' => Parameter::create('domain', 'The domain in which to create the controller.', [], '')
 		], [
 			'Creates a controller' => 'Ubiquity controller UserController',
 			'with its associated view' => 'Ubiquity controller UserController -v',
@@ -173,7 +173,7 @@ class Command {
 		], [
 			'd' => Parameter::create('database', 'The database connection to use', [], 'default'),
 			'a' => Parameter::create('access', 'The default access to the class members', [], 'private'),
-			'o' => Parameter::create('domain', 'The domain in which to create the model.', '')
+			'o' => Parameter::create('domain', 'The domain in which to create the model.', [], '')
 		], [
 			'Ubiquity model User',
 			'Ubiquity model Author -d=projects',
@@ -218,7 +218,7 @@ class Command {
 		], [
 			'd' => Parameter::create('database', 'The database connection to use (offset)', [], 'default'),
 			'a' => Parameter::create('access', 'The default access to the class members', [], 'private'),
-			'o' => Parameter::create('domain', 'The domain in which to create the models.', '')
+			'o' => Parameter::create('domain', 'The domain in which to create the models.', [], '')
 		], [
 			'Ubiquity all-models',
 			'Ubiquity all-models -d=projects',
@@ -397,7 +397,7 @@ class Command {
 			"i" => Parameter::create("included", "The associated members to load (boolean or array: client.*,commands)", []),
 			"p" => Parameter::create("parameters", "The parameters for a parameterized query", []),
 			"f" => Parameter::create("fields", "The fields to display in the response", []),
-			'o' => Parameter::create('domain', 'The domain in which the models are.', '')
+			'o' => Parameter::create('domain', 'The domain in which the models are.', [], '')
 		], [
 			'Returns all instances of models\User' => 'Ubiquity dao getAll -r=User',
 			'Returns all instances of models\User and includes their commands' => 'Ubiquity dao getAll -r=User -i=commands',
@@ -437,7 +437,7 @@ class Command {
 				"true",
 				"false"
 			], "false"),
-			'o' => Parameter::create('domain', 'The domain in which to create the models.', '')
+			'o' => Parameter::create('domain', 'The domain in which to create the models.', [], '')
 		], [
 			'Adds the action all in controller Users' => 'Ubiquity action Users.all',
 			'Adds the action display in controller Users with a parameter' => 'Ubiquity action Users.display -p=idUser',
@@ -457,7 +457,7 @@ class Command {
 			], "false"),
 			"m" => Parameter::create("model", "The model on which the information is sought.", []),
 			"f" => Parameter::create("fields", "The fields to display in the table.", []),
-			'o' => Parameter::create('domain', 'The domain in which the models is.', '')
+			'o' => Parameter::create('domain', 'The domain in which the models is.', [], '')
 		], [
 			'Gets metadatas for User class' => 'Ubiquity info:model -m=User'
 		], 'models');
@@ -470,7 +470,7 @@ class Command {
 			'd' => Parameter::create('database', 'The database connection to use (offset)', [], 'default'),
 			"m" => Parameter::create("models", "The models on which the information is sought.", []),
 			"f" => Parameter::create("fields", "The fields to display in the table.", []),
-			'o' => Parameter::create('domain', 'The domain in which the models are.', '')
+			'o' => Parameter::create('domain', 'The domain in which the models are.', [], '')
 		], [
 			'Gets metadatas for all models in default db' => 'Ubiquity info:models',
 			'Gets metadatas for all models in messagerie db' => 'Ubiquity info:models -d=messagerie',
@@ -490,7 +490,7 @@ class Command {
 				'false'
 			], 'false'),
 			"m" => Parameter::create("model", "The model on which the information is sought.", []),
-			'o' => Parameter::create('domain', 'The domain in which the models is.', '')
+			'o' => Parameter::create('domain', 'The domain in which the models is.', [], '')
 		], [
 			'Gets validators for User class' => 'Ubiquity info:validation -m=User',
 			'Gets validators for User class on member firstname' => 'Ubiquity info:validation firstname -m=User'
