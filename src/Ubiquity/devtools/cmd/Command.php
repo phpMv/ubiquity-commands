@@ -155,13 +155,15 @@ class Command {
 		return new Command("controller", "controllerName", "Creates a new controller.", [
 			"create-controller"
 		], [
-			"v" => Parameter::create("views", "creates an associated view folder", [
+			"v" => Parameter::create("views", "creates an associated view folder and index.html", [
 				"true",
 				"false"
-			], 'false')
+			], 'false'),
+			'o' => Parameter::create('domain', 'The domain in which to create the controller.', '')
 		], [
 			'Creates a controller' => 'Ubiquity controller UserController',
-			'with its associated view' => 'Ubiquity controller UserController -v'
+			'with its associated view' => 'Ubiquity controller UserController -v',
+			'Creates a controller in the orga domain' => 'Ubiquity controller OrgaController -o=orga'
 		], 'controllers');
 	}
 
@@ -170,7 +172,8 @@ class Command {
 			"create-model"
 		], [
 			'd' => Parameter::create('database', 'The database connection to use', [], 'default'),
-			'a' => Parameter::create('access', 'The default access to the class members', [], 'private')
+			'a' => Parameter::create('access', 'The default access to the class members', [], 'private'),
+			'o' => Parameter::create('domain', 'The domain in which to create the model.', '')
 		], [
 			'Ubiquity model User',
 			'Ubiquity model Author -d=projects',
@@ -214,7 +217,8 @@ class Command {
 			"create-all-models"
 		], [
 			'd' => Parameter::create('database', 'The database connection to use (offset)', [], 'default'),
-			'a' => Parameter::create('access', 'The default access to the class members', [], 'private')
+			'a' => Parameter::create('access', 'The default access to the class members', [], 'private'),
+			'o' => Parameter::create('domain', 'The domain in which to create the models.', '')
 		], [
 			'Ubiquity all-models',
 			'Ubiquity all-models -d=projects',
@@ -271,12 +275,15 @@ class Command {
 			'Starts a reactPHP server at 127.0.0.1:8080' => 'Ubiquity serve -t=react'
 		], 'servers');
 	}
-	
+
 	public static function liveReload() {
-		return new Command("livereload", "path", "Start the live reload server.", ['live-reload','live'], [
+		return new Command("livereload", "path", "Start the live reload server.", [
+			'live-reload',
+			'live'
+		], [
 			"p" => Parameter::create("port", "Sets the listen port number.", [], 35729),
-			"e" => Parameter::create("exts", "Specify extentions to observe .", [],'php,html'),
-			"x" => Parameter::create("exclusions", "Exclude file matching pattern .", [],'cache/,logs/')
+			"e" => Parameter::create("exts", "Specify extentions to observe .", [], 'php,html'),
+			"x" => Parameter::create("exclusions", "Exclude file matching pattern .", [], 'cache/,logs/')
 		], [
 			'Starts the live-reload server at 127.0.0.1:35729' => 'Ubiquity live-reload',
 			'Starts the live-reload server at 127.0.0.1:35800 excluding logs directory' => 'Ubiquity live-reload -p=35800 -x=logs/'
@@ -327,35 +334,37 @@ class Command {
 			'Creates a crud controller for the class models\projects\Author' => 'Ubiquity crud Authors -r=models\projects\Author'
 		], 'controllers');
 	}
-	
+
 	public static function indexCrudController() {
-	    return new Command("crud-index", "crudControllerName", "Creates a new index-CRUD controller.", [
-	        "crud-index-controller"
-	    ], [
-	        "d" => Parameter::create("datas", "The associated Datas class", [
-	            "true",
-	            "false"
-	        ], "true"),
-	        "v" => Parameter::create("viewer", "The associated Viewer class", [
-	            "true",
-	            "false"
-	        ], "true"),
-	        "e" => Parameter::create("events", "The associated Events class", [
-	            "true",
-	            "false"
-	        ], "true"),
-	        "t" => Parameter::create("templates", "The templates to modify", [
-	            "index",
-	            "form",
-	            "display",
-	            "item",
-	            "itemHome"
-	        ], "index,form,display,home,itemHome"),
-	        "p" => Parameter::create("path", "The associated route", ['{resource}'])
-	    ], [
-	        'Creates an index crud controller' => 'Ubiquity crud-index MainCrud -p=crud/{resource}',
-	        'allows customization of index and form templates' => 'Ubiquity index-crud MainCrud -t=index,form'
-	    ], 'controllers');
+		return new Command("crud-index", "crudControllerName", "Creates a new index-CRUD controller.", [
+			"crud-index-controller"
+		], [
+			"d" => Parameter::create("datas", "The associated Datas class", [
+				"true",
+				"false"
+			], "true"),
+			"v" => Parameter::create("viewer", "The associated Viewer class", [
+				"true",
+				"false"
+			], "true"),
+			"e" => Parameter::create("events", "The associated Events class", [
+				"true",
+				"false"
+			], "true"),
+			"t" => Parameter::create("templates", "The templates to modify", [
+				"index",
+				"form",
+				"display",
+				"item",
+				"itemHome"
+			], "index,form,display,home,itemHome"),
+			"p" => Parameter::create("path", "The associated route", [
+				'{resource}'
+			])
+		], [
+			'Creates an index crud controller' => 'Ubiquity crud-index MainCrud -p=crud/{resource}',
+			'allows customization of index and form templates' => 'Ubiquity index-crud MainCrud -t=index,form'
+		], 'controllers');
 	}
 
 	public static function restController() {
@@ -387,7 +396,8 @@ class Command {
 			"c" => Parameter::create("condition", "The where part of the query", []),
 			"i" => Parameter::create("included", "The associated members to load (boolean or array: client.*,commands)", []),
 			"p" => Parameter::create("parameters", "The parameters for a parameterized query", []),
-			"f" => Parameter::create("fields", "The fields to display in the response", [])
+			"f" => Parameter::create("fields", "The fields to display in the response", []),
+			'o' => Parameter::create('domain', 'The domain in which the models are.', '')
 		], [
 			'Returns all instances of models\User' => 'Ubiquity dao getAll -r=User',
 			'Returns all instances of models\User and includes their commands' => 'Ubiquity dao getAll -r=User -i=commands',
@@ -426,7 +436,8 @@ class Command {
 			"v" => Parameter::create("create-view", "Creates the associated view", [
 				"true",
 				"false"
-			], "false")
+			], "false"),
+			'o' => Parameter::create('domain', 'The domain in which to create the models.', '')
 		], [
 			'Adds the action all in controller Users' => 'Ubiquity action Users.all',
 			'Adds the action display in controller Users with a parameter' => 'Ubiquity action Users.display -p=idUser',
@@ -445,7 +456,8 @@ class Command {
 				"false"
 			], "false"),
 			"m" => Parameter::create("model", "The model on which the information is sought.", []),
-			"f" => Parameter::create("fields", "The fields to display in the table.", [])
+			"f" => Parameter::create("fields", "The fields to display in the table.", []),
+			'o' => Parameter::create('domain', 'The domain in which the models is.', '')
 		], [
 			'Gets metadatas for User class' => 'Ubiquity info:model -m=User'
 		], 'models');
@@ -457,7 +469,8 @@ class Command {
 		], [
 			'd' => Parameter::create('database', 'The database connection to use (offset)', [], 'default'),
 			"m" => Parameter::create("models", "The models on which the information is sought.", []),
-			"f" => Parameter::create("fields", "The fields to display in the table.", [])
+			"f" => Parameter::create("fields", "The fields to display in the table.", []),
+			'o' => Parameter::create('domain', 'The domain in which the models are.', '')
 		], [
 			'Gets metadatas for all models in default db' => 'Ubiquity info:models',
 			'Gets metadatas for all models in messagerie db' => 'Ubiquity info:models -d=messagerie',
@@ -476,7 +489,8 @@ class Command {
 				'true',
 				'false'
 			], 'false'),
-			"m" => Parameter::create("model", "The model on which the information is sought.", [])
+			"m" => Parameter::create("model", "The model on which the information is sought.", []),
+			'o' => Parameter::create('domain', 'The domain in which the models is.', '')
 		], [
 			'Gets validators for User class' => 'Ubiquity info:validation -m=User',
 			'Gets validators for User class on member firstname' => 'Ubiquity info:validation firstname -m=User'
@@ -574,20 +588,20 @@ class Command {
 			"newMail",
 			"new:mail"
 		], [
-			"p" => Parameter::create("parent", "The class parent.", [],'\\Ubiquity\\mailer\\AbstractMail'),
-			"v" => Parameter::create("view", "Add the associated view.", [],false)
+			"p" => Parameter::create("parent", "The class parent.", [], '\\Ubiquity\\mailer\\AbstractMail'),
+			"v" => Parameter::create("view", "Add the associated view.", [], false)
 		], [
 			'Creates a new mailer class' => 'Ubiquity newMail InformationMail'
 		], 'mailer');
 	}
-	
+
 	public static function newClass() {
 		return new Command("new-class", "name", "Creates a new class.", [
 			"newClass",
 			"new:class",
 			"class"
 		], [
-			"p" => Parameter::create("parent", "The class parent.",[])
+			"p" => Parameter::create("parent", "The class parent.", [])
 		], [
 			'Creates a new class' => 'Ubiquity class services.OrgaRepository'
 		], 'controllers');
@@ -633,8 +647,8 @@ class Command {
 			'Display all defined roles with ACL annotations' => 'Ubiquity aclDisplay role'
 		], 'security');
 	}
-	
-	public static function newEncryptionKey(){
+
+	public static function newEncryptionKey() {
 		return new Command('new-key', 'cypher', 'Generate a new encryption key using a cipher.', [
 			'new:key',
 			'newKey'
@@ -720,7 +734,7 @@ class Command {
 			self::controller(),
 			self::newAction(),
 			self::authController(),
-		    self::indexCrudController(),
+			self::indexCrudController(),
 			self::crudController(),
 			self::newClass(),
 			self::newTheme(),
