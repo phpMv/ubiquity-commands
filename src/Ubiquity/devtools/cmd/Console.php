@@ -29,8 +29,8 @@ class Console {
 	 */
 	public static function question($prompt, array $propositions = null) {
 		echo ConsoleFormatter::colorize($prompt, ConsoleFormatter::BLACK, ConsoleFormatter::BG_YELLOW);
-		if (is_array($propositions)) {
-			if (sizeof($propositions) > 2) {
+		if (\is_array($propositions)) {
+			if (\count($propositions) > 2) {
 				$props = "";
 				foreach ($propositions as $index => $prop) {
 					$props .= "[" . ($index + 1) . "] " . $prop . "\n";
@@ -44,7 +44,7 @@ class Console {
 				echo " (" . implode("/", $propositions) . ")\n";
 				do {
 					$answer = self::readline();
-				} while (array_search($answer, $propositions) === false);
+				} while (\array_search($answer, $propositions) === false);
 			}
 		} else {
 			$answer = self::readline();

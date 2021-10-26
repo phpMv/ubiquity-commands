@@ -115,7 +115,7 @@ trait CmdTrait {
 		if (! UString::startswith($classname, $prefix)) {
 			$classname = $prefix . $classname;
 		}
-		return str_replace("\\\\", "\\", $classname);
+		return \str_replace("\\\\", "\\", $classname);
 	}
 
 	protected static function getSelectedModels($models, $config) {
