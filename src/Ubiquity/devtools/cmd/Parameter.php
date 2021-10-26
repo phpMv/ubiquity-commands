@@ -20,7 +20,7 @@ class Parameter {
 
 	protected $defaultValue;
 
-	public function __construct($name = '', $description = '', $values = [], $defaultValue = "") {
+	public function __construct(string $name = '', string $description = '', array $values = [], string $defaultValue = "") {
 		$this->name = $name;
 		$this->description = $description;
 		$this->values = $values;
@@ -30,7 +30,7 @@ class Parameter {
 	public function __toString() {
 		$dec = "\t\t\t";
 		$result = "\tshortcut of --<b>" . $this->name . "</b>\n" . $dec . $this->description;
-		if (sizeof($this->values) > 0) {
+		if (\count($this->values) > 0) {
 			$result .= "\n" . $dec . "Possibles values :";
 			$result .= "\n" . $dec . ConsoleFormatter::colorize(implode(",", $this->values), ConsoleFormatter::DARK_GREY);
 		}
@@ -89,7 +89,7 @@ class Parameter {
 	 *        	The default value
 	 * @return \Ubiquity\devtools\cmd\Parameter
 	 */
-	public static function create($name, $description, $values, $defaultValue = "") {
+	public static function create(string $name, string $description, array $values, string $defaultValue = "") {
 		return new Parameter($name, $description, $values, $defaultValue);
 	}
 }

@@ -33,7 +33,7 @@ class Command {
 
 	protected static $customAliases;
 
-	public function __construct($name = '', $value = '', $description = '', $aliases = [], $parameters = [], $examples = [], $category = 'custom') {
+	public function __construct(string $name = '', string $value = '', string $description = '', array $aliases = [], array $parameters = [], array $examples = [], string $category = 'custom') {
 		$this->name = $name;
 		$this->value = $value;
 		$this->description = $description;
@@ -51,7 +51,7 @@ class Command {
 		$dec = "\t";
 		$result = "\n<b>■ " . $this->name . "</b> [" . ConsoleFormatter::colorize($this->value, ConsoleFormatter::YELLOW) . "] =>";
 		$result .= "\n" . $dec . "· " . $this->description;
-		if (sizeof($this->aliases) > 0) {
+		if (\count($this->aliases) > 0) {
 			$result .= "\n" . $dec . "· Aliases :";
 			$aliases = $this->aliases;
 			array_walk($aliases, function (&$alias) {
@@ -59,14 +59,14 @@ class Command {
 			});
 			$result .= " " . implode(",", $aliases);
 		}
-		if (sizeof($this->parameters) > 0) {
+		if (\count($this->parameters) > 0) {
 			$result .= "\n" . $dec . "· Parameters :";
 			foreach ($this->parameters as $param => $content) {
 				$result .= "\n" . $dec . "\t<b>-" . $param . "</b>";
 				$result .= $content . "\n";
 			}
 		}
-		if (sizeof($this->examples) > 0) {
+		if (\count($this->examples) > 0) {
 			$result .= "\n" . $dec . "<b>× Samples :</b>";
 			foreach ($this->examples as $desc => $sample) {
 				if (is_string($desc)) {
@@ -90,12 +90,12 @@ class Command {
 							"cmd" => $command
 						]
 					];
-				} elseif (array_search($cmd, $command->getAliases()) !== false) {
+				} elseif (\array_search($cmd, $command->getAliases()) !== false) {
 					$result[] = [
 						"info" => "Command <b>{$cmd}</b> find by alias",
 						"cmd" => $command
 					];
-				} elseif (stripos($command->getDescription(), $cmd) !== false) {
+				} elseif (\stripos($command->getDescription(), $cmd) !== false) {
 					$result[] = [
 						"info" => "Command <b>{$cmd}</b> find in description",
 						"cmd" => $command
@@ -109,7 +109,7 @@ class Command {
 								"cmd" => $command
 							];
 						}
-						if (stripos($parameter->getDescription(), $cmd) !== false) {
+						if (\stripos($parameter->getDescription(), $cmd) !== false) {
 							$result[] = [
 								"info" => "Command <b>{$cmd}</b> find in parameter description",
 								"cmd" => $command
@@ -263,7 +263,7 @@ class Command {
 			"h" => Parameter::create("host", "Sets the host ip address.", [], '127.0.0.1'),
 			"p" => Parameter::create("port", "Sets the listen port number.", [], 8090),
 			"n" => Parameter::create("nolr", "Starts without live-reload.", [], false),
-			"l" => Parameter::create("lrport", "Sets the live-reload listen port number.", [], 35729),
+			"l" => Parameter::create("lrport", "Sets the live-reload listen port number.", [], '35729'),
 			"t" => Parameter::create("type", "Sets the server type.", [
 				'php',
 				'react',
@@ -326,7 +326,8 @@ class Command {
 				"form",
 				"display"
 			], "index,form,display"),
-			"p" => Parameter::create("path", "The associated route", [])
+			"p" => Parameter::create("path", "The associated route", []),
+			'o' => Parameter::create('domain', 'The domain in which to create the controller.', [], '')
 		], [
 			'Creates a crud controller for the class models\User' => 'Ubiquity crud CrudUsers -r=User',
 			'and associates a route to it' => 'Ubiquity crud CrudUsers -r=User -p=/users',
@@ -360,7 +361,8 @@ class Command {
 			], "index,form,display,home,itemHome"),
 			"p" => Parameter::create("path", "The associated route", [
 				'{resource}'
-			])
+			]),
+			'o' => Parameter::create('domain', 'The domain in which to create the controller.', [], '')
 		], [
 			'Creates an index crud controller' => 'Ubiquity crud-index MainCrud -p=crud/{resource}',
 			'allows customization of index and form templates' => 'Ubiquity index-crud MainCrud -t=index,form'
@@ -437,7 +439,7 @@ class Command {
 				"true",
 				"false"
 			], "false"),
-			'o' => Parameter::create('domain', 'The domain in which to create the models.', [], '')
+			'o' => Parameter::create('domain', 'The domain in which the controller is.', [], '')
 		], [
 			'Adds the action all in controller Users' => 'Ubiquity action Users.all',
 			'Adds the action display in controller Users with a parameter' => 'Ubiquity action Users.display -p=idUser',
@@ -793,7 +795,7 @@ class Command {
 	 */
 	public function getValue() {
 		if ($this->value != null) {
-			return ltrim($this->value, '?');
+			return \ltrim($this->value, '?');
 		}
 		return $this->value;
 	}
@@ -843,7 +845,7 @@ class Command {
 	}
 
 	public function hasParameters() {
-		return count($this->parameters) > 0;
+		return \count($this->parameters) > 0;
 	}
 
 	public function hasValue() {
