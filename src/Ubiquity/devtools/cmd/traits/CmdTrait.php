@@ -138,7 +138,12 @@ trait CmdTrait {
 	protected static function updateDomain($options) {
 		$domain = self::getOption($options, 'o', 'domain', '');
 		if ($domain != '') {
-			DDDManager::setDomain($domain);
+			$domains = DDDManager::getDomains();
+			if (\array_search($domain, $domains) !== false) {
+				DDDManager::setDomain($domain);
+			} else {
+				throw new \Ubiquity\exceptions\UbiquityException("Domain `$domain` doesn't exist!");
+			}
 		}
 		return $domain;
 	}
