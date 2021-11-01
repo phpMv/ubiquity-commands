@@ -125,7 +125,7 @@ class Command {
 	public static function project() {
 		return new Command("project", "projectName", "Creates a new #ubiquity project.", [
 			"new",
-			"create-project"
+			"create_project"
 		], [
 			"b" => Parameter::create("dbName", "Sets the database name.", []),
 			"s" => Parameter::create("serverName", "Defines the db server address.", [], "127.0.0.1"),
@@ -153,7 +153,10 @@ class Command {
 
 	public static function controller() {
 		return new Command("controller", "controllerName", "Creates a new controller.", [
-			"create-controller"
+			'create_controller',
+			'create:controller',
+			'create-controller',
+			'createController'
 		], [
 			"v" => Parameter::create("views", "creates an associated view folder and index.html", [
 				"true",
@@ -169,7 +172,10 @@ class Command {
 
 	public static function model() {
 		return new Command("model", "tableName", "Generates a new model.", [
-			"create-model"
+			'create_model',
+			'create:model',
+			'create-model',
+			'createModel'
 		], [
 			'd' => Parameter::create('database', 'The database connection to use', [], 'default'),
 			'a' => Parameter::create('access', 'The default access to the class members', [], 'private'),
@@ -182,9 +188,11 @@ class Command {
 	}
 
 	public static function routes() {
-		return new Command("info:routes", "", "Display the cached routes.", [
-			"info:r",
-			"info::routes"
+		return new Command("info-routes", "", "Display the cached routes.", [
+			'info:r',
+			'info_routes',
+			'info:routes',
+			'infoRoutes'
 		], [
 			"t" => Parameter::create("type", "Defines the type of routes to display.", [
 				"all",
@@ -214,7 +222,10 @@ class Command {
 
 	public static function allModels() {
 		return new Command("all-models", "", "Generates all models from database.", [
-			"create-all-models"
+			'create-all-models',
+			'all_models',
+			'all:models',
+			'allModels'
 		], [
 			'd' => Parameter::create('database', 'The database connection to use (offset)', [], 'default'),
 			'a' => Parameter::create('access', 'The default access to the class members', [], 'private'),
@@ -227,7 +238,11 @@ class Command {
 	}
 
 	public static function clearCache() {
-		return new Command("clear-cache", "", "Clear models cache.", [], [
+		return new Command("clear-cache", "", "Clear models cache.", [
+			'clear_cache',
+			'clear:cache',
+			'clearCache'
+		], [
 			"t" => Parameter::create("type", "Defines the type of cache to reset.", [
 				"all",
 				"annotations",
@@ -244,7 +259,11 @@ class Command {
 	}
 
 	public static function initCache() {
-		return new Command("init-cache", "", "Init the cache for models, router, rest.", [], [
+		return new Command("init-cache", "", "Init the cache for models, router, rest.", [
+			'init_cache',
+			'init:cache',
+			'initCache'
+		], [
 			"t" => Parameter::create("type", "Defines the type of cache to create.", [
 				"all",
 				"controllers",
@@ -306,7 +325,10 @@ class Command {
 
 	public static function crudController() {
 		return new Command("crud", "crudControllerName", "Creates a new CRUD controller.", [
-			"crud-controller"
+			'crud_controller',
+			'crud:controller',
+			'crud-controller',
+			'crudController'
 		], [
 			"r" => Parameter::create("resource", "The model used", []),
 			"d" => Parameter::create("datas", "The associated Datas class", [
@@ -338,7 +360,10 @@ class Command {
 
 	public static function indexCrudController() {
 		return new Command("crud-index", "crudControllerName", "Creates a new index-CRUD controller.", [
-			"crud-index-controller"
+			'crud-index-controller',
+			'crud_index',
+			'crud:index',
+			'crudIndex'
 		], [
 			"d" => Parameter::create("datas", "The associated Datas class", [
 				"true",
@@ -359,9 +384,7 @@ class Command {
 				"item",
 				"itemHome"
 			], "index,form,display,home,itemHome"),
-			"p" => Parameter::create("path", "The associated route", [
-				'{resource}'
-			]),
+			"p" => Parameter::create("path", "The associated route", [], '{resource}'),
 			'o' => Parameter::create('domain', 'The domain in which to create the controller.', [], '')
 		], [
 			'Creates an index crud controller' => 'Ubiquity crud-index MainCrud -p=crud/{resource}',
@@ -371,7 +394,10 @@ class Command {
 
 	public static function restController() {
 		return new Command("rest", "restControllerName", "Creates a new REST controller.", [
-			"rest-controller"
+			'rest-controller',
+			'rest:controller',
+			'rest_controller',
+			'restController'
 		], [
 			"r" => Parameter::create("resource", "The model used", []),
 			"p" => Parameter::create("path", "The associated route", [])
@@ -382,7 +408,10 @@ class Command {
 
 	public static function restApiController() {
 		return new Command("restapi", "restControllerName", "Creates a new REST API controller.", [
-			"restapi-controller"
+			'restapi-controller',
+			'restapi:controller',
+			'restapi_controller',
+			'restapiController'
 		], [
 			"p" => Parameter::create("path", "The associated route", [])
 		], [
@@ -410,7 +439,10 @@ class Command {
 
 	public static function authController() {
 		return new Command("auth", "authControllerName", "Creates a new controller for authentification.", [
-			"auth-controller"
+			'auth-controller',
+			'auth_controller',
+			'auth:controller',
+			'authController'
 		], [
 			"e" => Parameter::create("extends", "The base class of the controller (must derived from AuthController)", [], "Ubiquity\\controllers\\auth\\AuthController"),
 			"t" => Parameter::create("templates", "The templates to modify", [
@@ -431,7 +463,10 @@ class Command {
 
 	public static function newAction() {
 		return new Command("action", "controller.action", "Creates a new action in a controller.", [
-			"new-action"
+			'new-action',
+			'new_action',
+			'new:action',
+			'newAction'
 		], [
 			"p" => Parameter::create("params", "The action parameters (or arguments)", []),
 			"r" => Parameter::create("route", "The associated route path", []),
@@ -449,9 +484,24 @@ class Command {
 		], 'controllers');
 	}
 
+	public static function newDomain() {
+		return new Command('domain', 'name', 'Creates a new domain (for a Domain Driven Design approach).', [
+			'new-domain',
+			'new_domain',
+			'new:domain',
+			'newDomain'
+		], [
+			"b" => Parameter::create("base", "The base folder for domains.", [], 'domains')
+		], [
+			'Creates a new domain users' => 'Ubiquity domain users'
+		], 'controllers');
+	}
+
 	public static function infoModel() {
-		return new Command("info:model", "?infoType", "Returns the model meta datas.", [
-			"info-model"
+		return new Command("info-model", "?infoType", "Returns the model meta datas.", [
+			'info_model',
+			'info:model',
+			'infoModel'
 		], [
 			"s" => Parameter::create("separate", "If true, returns each info in a separate table", [
 				"true",
@@ -466,8 +516,10 @@ class Command {
 	}
 
 	public static function infoModels() {
-		return new Command("info:models", "", "Returns the models meta datas.", [
-			"info-models"
+		return new Command('info-models', '', 'Returns the models meta datas.', [
+			'info_models',
+			'info:models',
+			'infoModels'
 		], [
 			'd' => Parameter::create('database', 'The database connection to use (offset)', [], 'default'),
 			"m" => Parameter::create("models", "The models on which the information is sought.", []),
@@ -482,10 +534,14 @@ class Command {
 	}
 
 	public static function infoValidation() {
-		return new Command("info:validation", "?memberName", "Returns the models validation info.", [
-			"info-validation",
-			"info:validators",
-			"info-validators"
+		return new Command("info-validation", "?memberName", "Returns the models validation info.", [
+			'info_validation',
+			'info:validation',
+			'infoValidation',
+			'info_validators',
+			'info-validators',
+			'info:validators',
+			'infoValidators'
 		], [
 			"s" => Parameter::create("separate", "If true, returns each info in a separate table", [
 				'true',
@@ -501,8 +557,10 @@ class Command {
 
 	public static function configInfo() {
 		return new Command("config", "", "Returns the config informations from app/config/config.php.", [
-			"info-config",
-			"info:config"
+			'info_config',
+			'info-config',
+			'info:config',
+			'infoConfig'
 		], [
 			"f" => Parameter::create("fields", "The fields to display.", [])
 		], [
@@ -512,10 +570,11 @@ class Command {
 	}
 
 	public static function configSet() {
-		return new Command("config:set", "", "Modify/add variables and save them in app/config/config.php. Supports only long parameters with --.", [
-			"info-set",
-			"set:config",
-			"set-config"
+		return new Command("config-set", "", "Modify/add variables and save them in app/config/config.php. Supports only long parameters with --.", [
+			'set_config',
+			'set-config',
+			'set:config',
+			'setConfig'
 		], [], [
 			'Assigns a new value to siteURL' => 'Ubiquity config:set --siteURL=http://127.0.0.1/quick-start/',
 			'Change the database name and port' => 'Ubiquity config:set --database.dbName=blog --database.port=3307'
@@ -524,7 +583,9 @@ class Command {
 
 	public static function newTheme() {
 		return new Command("create-theme", "themeName", "Creates a new theme or installs an existing one.", [
-			"create:theme"
+			'create_theme',
+			'create:theme',
+			'createTheme'
 		], [
 			"x" => Parameter::create("extend", "If specified, inherits from an existing theme (bootstrap,semantic or foundation).", [
 				'bootstrap',
@@ -539,8 +600,10 @@ class Command {
 
 	public static function installTheme() {
 		return new Command("theme", "themeName", "Installs an existing theme or creates a new one if the specified theme does not exists.", [
-			"install-theme",
-			"install:theme"
+			'install_theme',
+			'install-theme',
+			'install:theme',
+			'installTheme'
 		], [], [
 			'Creates a new theme custom' => 'Ubiquity theme custom',
 			'Install bootstrap theme' => 'Ubiquity theme bootstrap'
@@ -575,20 +638,24 @@ class Command {
 	}
 
 	public static function sendMails() {
-		return new Command("sendMail", "", "Send message(s) from queue.", [
-			"sendMails"
+		return new Command("send-mail", "", "Send message(s) from queue.", [
+			'send-mails',
+			'send_mails',
+			'send:mails',
+			'sendMails'
 		], [
 			"n" => Parameter::create("num", "If specified, Send the mail at the position n in queue.", [])
 		], [
-			'Send all messages to send from queue' => 'Ubiquity semdmails',
-			'Send the first message in queue' => 'Ubiquity sendmail 1'
+			'Send all messages to send from queue' => 'Ubiquity semdMails',
+			'Send the first message in queue' => 'Ubiquity sendMail 1'
 		], 'mailer');
 	}
 
 	public static function newMail() {
 		return new Command("new-mail", "name", "Creates a new mailer class.", [
-			"newMail",
-			"new:mail"
+			'new_mail',
+			'new:mail',
+			'newMail'
 		], [
 			"p" => Parameter::create("parent", "The class parent.", [], '\\Ubiquity\\mailer\\AbstractMail'),
 			"v" => Parameter::create("view", "Add the associated view.", [], false)
@@ -598,10 +665,11 @@ class Command {
 	}
 
 	public static function newClass() {
-		return new Command("new-class", "name", "Creates a new class.", [
-			"newClass",
-			"new:class",
-			"class"
+		return new Command('new-class', "name", "Creates a new class.", [
+			'new_class',
+			'new:class',
+			'newClass',
+			'class'
 		], [
 			"p" => Parameter::create("parent", "The class parent.", [])
 		], [
@@ -611,7 +679,8 @@ class Command {
 
 	public static function createCommand() {
 		return new Command("create-command", "commandName", "Creates a new custom command for the devtools.", [
-			"create:command",
+			'create_command',
+			'create:command',
 			'createCommand'
 		], [
 			"v" => Parameter::create("value", "The command value (first parameter).", []),
@@ -625,6 +694,7 @@ class Command {
 
 	public static function initAcls() {
 		return new Command('acl-init', '', 'Initialize Acls defined with annotations in controllers.', [
+			'acl_init',
 			'acl:init',
 			'aclInit'
 		], [], [
@@ -634,6 +704,7 @@ class Command {
 
 	public static function displayAcls() {
 		return new Command('acl-display', '', 'Display Acls defined with annotations in controllers.', [
+			'acl_display',
 			'acl:display',
 			'aclDisplay'
 		], [
@@ -652,6 +723,7 @@ class Command {
 
 	public static function newEncryptionKey() {
 		return new Command('new-key', 'cypher', 'Generate a new encryption key using a cipher.', [
+			'new_key',
 			'new:key',
 			'newKey'
 		], [], [
@@ -769,6 +841,7 @@ class Command {
 			self::initAcls(),
 			self::displayAcls(),
 			self::newEncryptionKey(),
+			self::newDomain(),
 			...self::getCustomCommandInfos()
 		];
 	}
