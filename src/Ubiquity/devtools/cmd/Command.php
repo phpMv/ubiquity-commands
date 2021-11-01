@@ -400,7 +400,8 @@ class Command {
 			'restController'
 		], [
 			"r" => Parameter::create("resource", "The model used", []),
-			"p" => Parameter::create("path", "The associated route", [])
+			"p" => Parameter::create("path", "The associated route", []),
+			'o' => Parameter::create('domain', 'The domain in which to create the controller.', [], '')
 		], [
 			'Creates a REST controller for the class models\User' => 'Ubiquity rest RestUsers -r=User -p=/rest/users'
 		], 'rest');
@@ -413,7 +414,8 @@ class Command {
 			'restapi_controller',
 			'restapiController'
 		], [
-			"p" => Parameter::create("path", "The associated route", [])
+			"p" => Parameter::create("path", "The associated route", []),
+			'o' => Parameter::create('domain', 'The domain in which to create the controller.', [], '')
 		], [
 			'Creates a REST API controller' => 'Ubiquity restapi -p=/rest'
 		], 'rest');
@@ -453,7 +455,8 @@ class Command {
 				"message",
 				"baseTemplate"
 			], 'index,info,noAccess,disconnected,message,baseTemplate'),
-			"p" => Parameter::create("path", "The associated route", [])
+			"p" => Parameter::create("path", "The associated route", []),
+			'o' => Parameter::create('domain', 'The domain in which to create the controller.', [], '')
 		], [
 			'Creates a new controller for authentification' => 'Ubiquity auth AdminAuthController',
 			'and associates a route to it' => 'Ubiquity auth AdminAuthController -p=/admin/auth',
