@@ -594,7 +594,8 @@ class Command {
 				'bootstrap',
 				'semantic',
 				'foundation'
-			])
+			]),
+			'o' => Parameter::create('domain', 'The domain in which to create the theme.', [], '')
 		], [
 			'Creates a new theme custom' => 'Ubiquity create-theme custom',
 			'Creates a new theme inheriting from Bootstrap' => 'Ubiquity theme myBootstrap -x=bootstrap'
@@ -607,7 +608,9 @@ class Command {
 			'install-theme',
 			'install:theme',
 			'installTheme'
-		], [], [
+		], [
+			'o' => Parameter::create('domain', 'The domain in which to install the theme.', [], '')
+		], [
 			'Creates a new theme custom' => 'Ubiquity theme custom',
 			'Install bootstrap theme' => 'Ubiquity theme bootstrap'
 		], 'gui');
