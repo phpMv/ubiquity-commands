@@ -737,6 +737,31 @@ class Command {
 		], 'security');
 	}
 
+	public static function infoMigrations() {
+		return new Command("info-migrations", "", "Returns the migration infos.", [
+			'info_migrations',
+			'info:migrations',
+			'infoMigrations'
+		], [
+			"d" => Parameter::create("database", "The database offset.", [], 'default'),
+			'o' => Parameter::create('domain', 'The domain in which the database models are.', [], '')
+		], [
+			'Display all migrations for the default database' => 'Ubiquity info:migrations'
+		], 'models');
+	}
+
+	public static function migrations() {
+		return new Command("migrations", "", "Display and execute the database migrations.", [
+			'migrations',
+			'migrate'
+		], [
+			"d" => Parameter::create("database", "The database offset.", [], 'default'),
+			'o' => Parameter::create('domain', 'The domain in which the database models are.', [], '')
+		], [
+			'Display and execute all migrations for the default database' => 'Ubiquity migrations'
+		], 'models');
+	}
+
 	protected static function getCustomCommandInfos() {
 		$result = [];
 		$commands = self::getCustomCommands();
@@ -828,6 +853,8 @@ class Command {
 			self::version(),
 			self::model(),
 			self::allModels(),
+			self::infoMigrations(),
+			self::migrations(),
 			self::dao(),
 			self::selfUpdate(),
 			self::composer(),
