@@ -101,6 +101,8 @@ class ConsoleFormatter {
 		if (isset($title)) {
 			$header .= ' : ' . $title;
 		}
+		$width=Screen::getWidth();
+		$content=wordwrap($content,$width-10);
 		$result = self::formatContent($content);
 		switch ($type) {
 			case 'error':
@@ -116,7 +118,7 @@ class ConsoleFormatter {
 				$header = self::colorize($header, self::LIGHT_GRAY);
 				break;
 		}
-		$result = rtrim($result, "\n");
+		$result = \rtrim($result, "\n");
 		return ConsoleTable::borderType([
 			[
 				$header . $result
