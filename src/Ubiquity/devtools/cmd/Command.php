@@ -10,7 +10,7 @@ use Ubiquity\utils\base\UFileSystem;
  * This class is part of Ubiquity
  *
  * @author jc
- * @version 1.0.2
+ * @version 1.0.3
  *
  */
 class Command {
@@ -192,7 +192,11 @@ class Command {
 			'create_model',
 			'create:model',
 			'create-model',
-			'createModel'
+			'createModel',
+			'new_model',
+			'new:model',
+			'new-model',
+			'newModel'
 		], [
 			'd' => Parameter::create('database', 'The database connection to use', [], 'default'),
 			'o' => Parameter::create('domain', 'The domain in which to create the model.', [], '')
