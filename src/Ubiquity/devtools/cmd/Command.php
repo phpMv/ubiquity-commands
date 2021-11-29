@@ -170,20 +170,35 @@ class Command {
 		], 'controllers');
 	}
 
+	public static function genModel() {
+		return new Command("model", "tableName", "Generates a new model from an existing table.", [
+			'gen_model',
+			'gen:model',
+			'gen-model',
+			'genModel'
+		], [
+			'd' => Parameter::create('database', 'The database connection to use', [], 'default'),
+			'a' => Parameter::create('access', 'The default access to the class members', [], 'private'),
+			'o' => Parameter::create('domain', 'The domain in which to create the model.', [], '')
+		], [
+			'Ubiquity genModel User',
+			'Ubiquity genModel Author -d=projects',
+			'Ubiquity genModel Author -d=projects -a=protected'
+		], 'models');
+	}
+
 	public static function model() {
-		return new Command("model", "tableName", "Generates a new model.", [
+		return new Command("model", "modelName", "Generates a new model from scratch.", [
 			'create_model',
 			'create:model',
 			'create-model',
 			'createModel'
 		], [
 			'd' => Parameter::create('database', 'The database connection to use', [], 'default'),
-			'a' => Parameter::create('access', 'The default access to the class members', [], 'private'),
 			'o' => Parameter::create('domain', 'The domain in which to create the model.', [], '')
 		], [
 			'Ubiquity model User',
-			'Ubiquity model Author -d=projects',
-			'Ubiquity model Author -d=projects -a=protected'
+			'Ubiquity model Author -d=projects'
 		], 'models');
 	}
 
@@ -852,6 +867,7 @@ class Command {
 			self::help(),
 			self::version(),
 			self::model(),
+			self::genModel(),
 			self::allModels(),
 			self::infoMigrations(),
 			self::migrations(),

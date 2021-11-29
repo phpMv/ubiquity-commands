@@ -27,7 +27,10 @@ class Console {
 	 * @param ?array $propositions
 	 * @return string
 	 */
-	public static function question($prompt, array $propositions = null) {
+	public static function question($prompt, array $propositions = null,array $options=[]) {
+		if(isset($options['default'])){
+			$prompt.=" (default:".$options['default'].")";
+		}
 		echo ConsoleFormatter::colorize($prompt, ConsoleFormatter::BLACK, ConsoleFormatter::BG_YELLOW);
 		if (\is_array($propositions)) {
 			if (\count($propositions) > 2) {
@@ -49,7 +52,9 @@ class Console {
 		} else {
 			$answer = self::readline();
 		}
-
+		if(isset($options['default']) && $answer==''){
+			$answer=$options['default'];
+		}
 		return $answer;
 	}
 
