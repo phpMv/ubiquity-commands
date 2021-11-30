@@ -40,12 +40,13 @@ class Console {
 				return \array_search(\strtolower($rep), \array_map('strtolower', $array))===false;
 			};
 		}
-		echo ConsoleFormatter::colorize($prompt, ConsoleFormatter::BLACK, ConsoleFormatter::BG_YELLOW);
+		echo ConsoleFormatter::colorize(ConsoleFormatter::formatHtml($prompt), ConsoleFormatter::BLACK, ConsoleFormatter::BG_YELLOW);
 		if (\is_array($propositions)) {
 			if (\count($propositions) > 2) {
 				$props = "";
 				foreach ($propositions as $index => $prop) {
-					$props .= "[" . ($index + 1) . "] " . $prop . "\n";
+					$dec=2-\strlen(($index+1).'');
+					$props .= "[" . ($index + 1) . "] " .str_repeat(' ',$dec). $prop . "\n";
 				}
 				echo ConsoleFormatter::formatContent($props);
 				do {
@@ -54,7 +55,7 @@ class Console {
 				$answer = $propositions[(int) $answer - 1];
 			} else {
 				echo " (" . implode("/", $propositions) . ")\n";
-				$propositions=array_merge($propositions,$hiddenProposals);
+				$propositions=\array_merge($propositions,$hiddenProposals);
 				do {
 					$answer = self::readline();
 				} while ($continue($answer,$propositions));
@@ -68,7 +69,7 @@ class Console {
 		return $answer;
 	}
 	
-	public static function yesNoQuestion($prompt, array $propositions = null,array $options=[]){
+	public static function yesNoQuestion($prompt, array $propositions = ['yes','no'],array $options=[]){
 		return self::question($prompt,$propositions,['ignoreCase'=>true,'hiddenProposals'=>['y','n']]);
 	}
 

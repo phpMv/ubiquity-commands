@@ -188,7 +188,7 @@ class Command {
 	}
 
 	public static function model() {
-		return new Command("model", "modelName", "Generates a new model from scratch.", [
+		return new Command("model", "modelName", "Generates models from scratch.", [
 			'create_model',
 			'create:model',
 			'create-model',
@@ -199,10 +199,12 @@ class Command {
 			'newModel'
 		], [
 			'd' => Parameter::create('database', 'The database connection to use', [], 'default'),
-			'o' => Parameter::create('domain', 'The domain in which to create the model.', [], '')
+			'o' => Parameter::create('domain', 'The domain in which to create the model.', [], ''),
+			'k' => Parameter::create('autoincPk', 'The default primary key defined as autoinc.', [], 'id')
 		], [
 			'Ubiquity model User',
-			'Ubiquity model Author -d=projects'
+			'Ubiquity model Author -d=projects',
+			'Ubiquity model Group,User -o=orga'
 		], 'models');
 	}
 
