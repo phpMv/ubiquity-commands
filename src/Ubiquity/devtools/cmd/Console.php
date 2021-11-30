@@ -28,8 +28,17 @@ class Console {
 	 * @return string
 	 */
 	public static function question($prompt, array $propositions = null,array $options=[]) {
+		$hiddenProposals=$options['hiddenProposals']??[];
+		$continue=function($rep,$array){
+			return \array_search($rep, $array)===false;
+		};
 		if(isset($options['default'])){
-			$prompt.=" (default:".$options['default'].")";
+			$prompt.=" (default:<b>".$options['default']."</b>)";
+		}
+		if(isset($options['ignoreCase'])){
+			$continue=function($rep,$array){
+				return \array_search(\strtolower($rep), \array_map('strtolower', $array))===false;
+			};
 		}
 		echo ConsoleFormatter::colorize($prompt, ConsoleFormatter::BLACK, ConsoleFormatter::BG_YELLOW);
 		if (\is_array($propositions)) {
@@ -45,9 +54,10 @@ class Console {
 				$answer = $propositions[(int) $answer - 1];
 			} else {
 				echo " (" . implode("/", $propositions) . ")\n";
+				$propositions=array_merge($propositions,$hiddenProposals);
 				do {
 					$answer = self::readline();
-				} while (\array_search($answer, $propositions) === false);
+				} while ($continue($answer,$propositions));
 			}
 		} else {
 			$answer = self::readline();
@@ -57,6 +67,10 @@ class Console {
 		}
 		return $answer;
 	}
+	
+	public static function yesNoQuestion($prompt, array $propositions = null,array $options=[]){
+		return self::question($prompt,$propositions,['ignoreCase'=>true,'hiddenProposals'=>['y','n']]);
+	}
 
 	/**
 	 * Returns true if the answer is yes or y.
@@ -65,9 +79,9 @@ class Console {
 	 * @return boolean
 	 */
 	public static function isYes($answer) {
-		return \array_search($answer, [
-			"yes",
-			"y"
+		return \array_search(\trim($answer), [
+			'yes',
+			'y'
 		]) !== false;
 	}
 
@@ -78,9 +92,9 @@ class Console {
 	 * @return boolean
 	 */
 	public static function isNo($answer) {
-		return \array_search($answer, [
-			"no",
-			"n"
+		return \array_search(\trim($answer), [
+			'no',
+			'n'
 		]) !== false;
 	}
 
@@ -91,9 +105,9 @@ class Console {
 	 * @return boolean
 	 */
 	public static function isCancel($answer) {
-		return \array_search($answer, [
-			"cancel",
-			"z"
+		return \array_search(\trim($answer), [
+			'cancel',
+			'z'
 		]) !== false;
 	}
 }
