@@ -72,6 +72,10 @@ class Console {
 	public static function yesNoQuestion($prompt, array $propositions = ['yes','no'],array $options=[]){
 		return self::question($prompt,$propositions,['ignoreCase'=>true,'hiddenProposals'=>['y','n']]);
 	}
+	
+	public static function explodeResponse(string $response, $callback='trim',string $separator=','){
+		return \array_map($callback,\array_filter( \explode($separator, \trim($response)), 'strlen' ));
+	}
 
 	/**
 	 * Returns true if the answer is yes or y.
