@@ -171,7 +171,7 @@ class Command {
 	}
 
 	public static function genModel() {
-		return new Command("model", "tableName", "Generates a new model from an existing table.", [
+		return new Command("genModel", "tableName", "Generates a new model from an existing table.", [
 			'gen_model',
 			'gen:model',
 			'gen-model',
