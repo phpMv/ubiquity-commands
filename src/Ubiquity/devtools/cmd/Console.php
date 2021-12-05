@@ -28,7 +28,7 @@ class Console {
 	 * @return string
 	 */
 	public static function question($prompt, array $propositions = null, array $options = []) {
-		$prompt = ConsoleFormatter::colorize($prompt, ConsoleFormatter::BLACK, ConsoleFormatter::BG_YELLOW);
+		$prompt = ConsoleFormatter::formatHtml(ConsoleFormatter::colorize($prompt, ConsoleFormatter::BLACK, ConsoleFormatter::BG_YELLOW));
 		$hiddenProposals = $options['hiddenProposals'] ?? [];
 		$continue = function ($rep, $array) {
 			return \array_search($rep, $array) === false;
