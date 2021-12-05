@@ -27,26 +27,27 @@ class Console {
 	 * @param ?array $propositions
 	 * @return string
 	 */
-	public static function question($prompt, array $propositions = null,array $options=[]) {
-		$hiddenProposals=$options['hiddenProposals']??[];
-		$continue=function($rep,$array){
-			return \array_search($rep, $array)===false;
+	public static function question($prompt, array $propositions = null, array $options = []) {
+		$prompt = ConsoleFormatter::colorize($prompt, ConsoleFormatter::BLACK, ConsoleFormatter::BG_YELLOW);
+		$hiddenProposals = $options['hiddenProposals'] ?? [];
+		$continue = function ($rep, $array) {
+			return \array_search($rep, $array) === false;
 		};
-		if(isset($options['default'])){
-			$prompt.=" (default:<b>".$options['default']."</b>)";
+		if (isset($options['default'])) {
+			$prompt .= ConsoleFormatter::formatHtml(" (default:<b>" . $options['default'] . "</b>)");
 		}
-		if(isset($options['ignoreCase'])){
-			$continue=function($rep,$array){
-				return \array_search(\strtolower($rep), \array_map('strtolower', $array))===false;
+		if (isset($options['ignoreCase'])) {
+			$continue = function ($rep, $array) {
+				return \array_search(\strtolower($rep), \array_map('strtolower', $array)) === false;
 			};
 		}
-		echo ConsoleFormatter::colorize(ConsoleFormatter::formatHtml($prompt), ConsoleFormatter::BLACK, ConsoleFormatter::BG_YELLOW);
+		echo $prompt;
 		if (\is_array($propositions)) {
 			if (\count($propositions) > 2) {
 				$props = "";
 				foreach ($propositions as $index => $prop) {
-					$dec=2-\strlen(($index+1).'');
-					$props .= "[" . ($index + 1) . "] " .str_repeat(' ',$dec). $prop . "\n";
+					$dec = 2 - \strlen(($index + 1) . '');
+					$props .= "[" . ($index + 1) . "] " . str_repeat(' ', $dec) . $prop . "\n";
 				}
 				echo ConsoleFormatter::formatContent($props);
 				do {
@@ -55,26 +56,35 @@ class Console {
 				$answer = $propositions[(int) $answer - 1];
 			} else {
 				echo " (" . implode("/", $propositions) . ")\n";
-				$propositions=\array_merge($propositions,$hiddenProposals);
+				$propositions = \array_merge($propositions, $hiddenProposals);
 				do {
 					$answer = self::readline();
-				} while ($continue($answer,$propositions));
+				} while ($continue($answer, $propositions));
 			}
 		} else {
 			$answer = self::readline();
 		}
-		if(isset($options['default']) && $answer==''){
-			$answer=$options['default'];
+		if (isset($options['default']) && $answer == '') {
+			$answer = $options['default'];
 		}
 		return $answer;
 	}
-	
-	public static function yesNoQuestion($prompt, array $propositions = ['yes','no'],array $options=[]){
-		return self::question($prompt,$propositions,['ignoreCase'=>true,'hiddenProposals'=>['y','n']]);
+
+	public static function yesNoQuestion($prompt, array $propositions = [
+		'yes',
+		'no'
+	], array $options = []) {
+		return self::question($prompt, $propositions, [
+			'ignoreCase' => true,
+			'hiddenProposals' => [
+				'y',
+				'n'
+			]
+		]);
 	}
-	
-	public static function explodeResponse(string $response, $callback='trim',string $separator=','){
-		return \array_map($callback,\array_filter( \explode($separator, \trim($response)), 'strlen' ));
+
+	public static function explodeResponse(string $response, $callback = 'trim', string $separator = ',') {
+		return \array_map($callback, \array_filter(\explode($separator, \trim($response)), 'strlen'));
 	}
 
 	/**
