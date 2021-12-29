@@ -1,16 +1,18 @@
 <?php
-
-
 namespace Ubiquity\devtools\cmd;
 
 /**
  * Class Screen
  * Forked from https://github.com/symfony/console/blob/5.3/Terminal.php
- * @package Ubiquity\devtools\cmd
+ *
+ * @package Ubiquity.devtools
  */
 class Screen {
+
 	private static $width;
+
 	private static $height;
+
 	private static $stty;
 
 	/**
@@ -28,7 +30,7 @@ class Screen {
 			self::initDimensions();
 		}
 
-		return self::$width??80;
+		return self::$width ?? 80;
 	}
 
 	/**
@@ -46,10 +48,11 @@ class Screen {
 			self::initDimensions();
 		}
 
-		return self::$height??50;
+		return self::$height ?? 50;
 	}
 
 	/**
+	 *
 	 * @internal
 	 *
 	 * @return bool
@@ -60,7 +63,7 @@ class Screen {
 		}
 
 		// skip check if exec function is disabled
-		if (!\function_exists('exec')) {
+		if (! \function_exists('exec')) {
 			return false;
 		}
 
@@ -76,7 +79,7 @@ class Screen {
 				// or [w, h] from "wxh"
 				self::$width = (int) $matches[1];
 				self::$height = isset($matches[4]) ? (int) $matches[4] : (int) $matches[2];
-			} elseif (!self::hasVt100Support() && self::hasSttyAvailable()) {
+			} elseif (! self::hasVt100Support() && self::hasSttyAvailable()) {
 				// only use stty on Windows if the terminal does not support vt100 (e.g. Windows 7 + git-bash)
 				// testing for stty in a Windows 10 vt100-enabled console will implicitly disable vt100 support on STDOUT
 				self::initDimensionsUsingStty();
@@ -122,11 +125,14 @@ class Screen {
 	private static function getConsoleMode(): ?array {
 		$info = self::readFromProcess('mode CON');
 
-		if (null === $info || !preg_match('/--------+\r?\n.+?(\d+)\r?\n.+?(\d+)\r?\n/', $info, $matches)) {
+		if (null === $info || ! preg_match('/--------+\r?\n.+?(\d+)\r?\n.+?(\d+)\r?\n/', $info, $matches)) {
 			return null;
 		}
 
-		return [(int) $matches[2], (int) $matches[1]];
+		return [
+			(int) $matches[2],
+			(int) $matches[1]
+		];
 	}
 
 	/**
@@ -137,17 +143,25 @@ class Screen {
 	}
 
 	private static function readFromProcess(string $command): ?string {
-		if (!\function_exists('proc_open')) {
+		if (! \function_exists('proc_open')) {
 			return null;
 		}
 
 		$descriptorspec = [
-			1 => ['pipe', 'w'],
-			2 => ['pipe', 'w'],
+			1 => [
+				'pipe',
+				'w'
+			],
+			2 => [
+				'pipe',
+				'w'
+			]
 		];
 
-		$process = \proc_open($command, $descriptorspec, $pipes, null, null, ['suppress_errors' => true]);
-		if (!\is_resource($process)) {
+		$process = \proc_open($command, $descriptorspec, $pipes, null, null, [
+			'suppress_errors' => true
+		]);
+		if (! \is_resource($process)) {
 			return null;
 		}
 

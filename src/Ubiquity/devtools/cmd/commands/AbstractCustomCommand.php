@@ -10,7 +10,7 @@ use Ubiquity\devtools\cmd\Command;
  *
  * @author jc
  * @version 1.0.0
- * @package ubiquity.devtools
+ * @package Ubiquity.devtools
  *
  */
 abstract class AbstractCustomCommand extends AbstractCmd {
