@@ -93,7 +93,7 @@ class ConsoleTable {
 		}
 		$content = preg_replace('#\x1b[[][^A-Za-z]*[A-Za-z]#', '', $cell);
 
-		$delta = - mb_strlen($cell, 'UTF-8') + mb_strlen($content, 'UTF-8') + $this->padding;
+		$delta = - \mb_strlen($cell, 'UTF-8') + \mb_strlen($content, 'UTF-8') + $this->padding;
 		$output .= $this->mb_str_pad($cell, $width - $delta, $row ? ' ' : '-'); // cell content
 
 		if ($row && $index == count($row) - 1) {
@@ -124,8 +124,8 @@ class ConsoleTable {
 	 */
 	private function mb_str_pad($str, $pad_len, $pad_str = ' ', $dir = STR_PAD_RIGHT, $encoding = NULL) {
 		$content = preg_replace('#\x1b[[][^A-Za-z]*[A-Za-z]#', '', $str);
-		$str_len = mb_strlen($content);
-		$pad_str_len = mb_strlen($pad_str);
+		$str_len = \mb_strlen($content);
+		$pad_str_len = \mb_strlen($pad_str);
 		if (! $str_len && ($dir == STR_PAD_RIGHT || $dir == STR_PAD_LEFT)) {
 			$str_len = 1; // @debug
 		}
@@ -137,14 +137,14 @@ class ConsoleTable {
 		$repeat = ceil($str_len - $pad_str_len + $pad_len);
 		if ($dir == STR_PAD_RIGHT) {
 			$result = $str . str_repeat($pad_str, $repeat);
-			$result = mb_substr($result, 0, $pad_len);
+			$result = \mb_substr($result, 0, $pad_len);
 		} else if ($dir == STR_PAD_LEFT) {
 			$result = str_repeat($pad_str, $repeat) . $str;
-			$result = mb_substr($result, - $pad_len);
+			$result = \mb_substr($result, - $pad_len);
 		} else if ($dir == STR_PAD_BOTH) {
 			$length = ($pad_len - $str_len) / 2;
 			$repeat = ceil($length / $pad_str_len);
-			$result = mb_substr(str_repeat($pad_str, $repeat), 0, floor($length)) . $str . mb_substr(str_repeat($pad_str, $repeat), 0, ceil($length));
+			$result = \mb_substr(str_repeat($pad_str, $repeat), 0, floor($length)) . $str . \mb_substr(str_repeat($pad_str, $repeat), 0, ceil($length));
 		}
 
 		return $result;
@@ -310,8 +310,8 @@ class ConsoleTable {
 							$this->rowHeight[$y] = $size;
 						}
 						foreach ($lines as $line) {
-							$content = preg_replace('#\x1b[[][^A-Za-z]*[A-Za-z]#', '', $line);
-							$len = mb_strlen($content, 'UTF-8');
+							$content = \preg_replace('#\x1b[[][^A-Za-z]*[A-Za-z]#', '', $line);
+							$len = \mb_strlen($content, 'UTF-8');
 							if (! isset($this->colWidths[$index])) {
 								$this->colWidths[$index] = $len + 2 * $this->padding;
 							} else {
