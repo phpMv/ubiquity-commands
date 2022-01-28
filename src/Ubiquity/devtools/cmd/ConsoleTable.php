@@ -83,21 +83,21 @@ class ConsoleTable {
 		$output .= ($this->v_lines[$index] == 1) ? $this->getVLine() : ' ';
 
 		$output .= $padding; // left padding
-		if (is_string($cell)) {
-			$cell = rtrim(preg_replace('/\s+/', ' ', $cell)); // remove line breaks
+		if (\is_string($cell)) {
+			$cell = \rtrim(\preg_replace('/\s+/', ' ', $cell)); // remove line breaks
 			if (! $this->preserveSpaceBefore) {
-				$cell = ltrim($cell);
+				$cell = \ltrim($cell);
 			}
 		} else {
 			$cell = '{}';
 		}
-		$content = preg_replace('#\x1b[[][^A-Za-z]*[A-Za-z]#', '', $cell);
+		$content = \preg_replace('#\x1b[[][^A-Za-z]*[A-Za-z]#', '', $cell);
 
 		$delta = - \mb_strlen($cell, 'UTF-8') + \mb_strlen($content, 'UTF-8') + $this->padding;
 		$output .= $this->mb_str_pad($cell, $width - $delta, $row ? ' ' : '-'); // cell content
 
-		if ($row && $index == count($row) - 1) {
-			$output .= ($this->v_lines[count($row)] == 1) ? $this->getVLine() : ' ';
+		if ($row && $index == \count($row) - 1) {
+			$output .= ($this->v_lines[\count($row)] == 1) ? $this->getVLine() : ' ';
 		}
 		return $output;
 	}
@@ -107,7 +107,7 @@ class ConsoleTable {
 	}
 
 	private function initializeBorders() {
-		$this->h_lines = array_fill(0, sizeof($this->datas) + 1, 1);
+		$this->h_lines = array_fill(0, \count($this->datas) + 1, 1);
 		$this->v_lines = array_fill(0, $this->colCount + 1, 1);
 	}
 
@@ -123,7 +123,7 @@ class ConsoleTable {
 	 * @return string
 	 */
 	private function mb_str_pad($str, $pad_len, $pad_str = ' ', $dir = STR_PAD_RIGHT, $encoding = NULL) {
-		$content = preg_replace('#\x1b[[][^A-Za-z]*[A-Za-z]#', '', $str);
+		$content = \preg_replace('#\x1b[[][^A-Za-z]*[A-Za-z]#', '', $str);
 		$str_len = \mb_strlen($content);
 		$pad_str_len = \mb_strlen($pad_str);
 		if (! $str_len && ($dir == STR_PAD_RIGHT || $dir == STR_PAD_LEFT)) {
@@ -134,17 +134,17 @@ class ConsoleTable {
 		}
 
 		$result = null;
-		$repeat = ceil($str_len - $pad_str_len + $pad_len);
+		$repeat = \ceil($str_len - $pad_str_len + $pad_len);
 		if ($dir == STR_PAD_RIGHT) {
-			$result = $str . str_repeat($pad_str, $repeat);
+			$result = $str . \str_repeat($pad_str, $repeat);
 			$result = \mb_substr($result, 0, $pad_len);
 		} else if ($dir == STR_PAD_LEFT) {
 			$result = str_repeat($pad_str, $repeat) . $str;
 			$result = \mb_substr($result, - $pad_len);
 		} else if ($dir == STR_PAD_BOTH) {
 			$length = ($pad_len - $str_len) / 2;
-			$repeat = ceil($length / $pad_str_len);
-			$result = \mb_substr(str_repeat($pad_str, $repeat), 0, floor($length)) . $str . \mb_substr(str_repeat($pad_str, $repeat), 0, ceil($length));
+			$repeat = \ceil($length / $pad_str_len);
+			$result = \mb_substr(str_repeat($pad_str, $repeat), 0, \floor($length)) . $str . \mb_substr(\str_repeat($pad_str, $repeat), 0, ceil($length));
 		}
 
 		return $result;
@@ -160,7 +160,7 @@ class ConsoleTable {
 	public function factorize() {
 		$flag = [];
 		foreach ($this->datas as $y => &$row) {
-			if (is_array($row)) {
+			if (\is_array($row)) {
 				$index = 0;
 				foreach ($row as &$col) {
 					if ((isset($flag[$index]) && $col !== $flag[$index]) || ! isset($flag[$index])) {
@@ -207,7 +207,7 @@ class ConsoleTable {
 			}
 			$y ++;
 		}
-		$res .= $this->border(sizeof($this->datas)) . PHP_EOL;
+		$res .= $this->border(\count($this->datas)) . PHP_EOL;
 		return $res;
 	}
 
@@ -218,7 +218,7 @@ class ConsoleTable {
 	}
 
 	public function removeHGrid($start = 2) {
-		$size = sizeof($this->datas);
+		$size = \count($this->datas);
 		for ($i = $start; $i < $size; $i ++) {
 			$this->h_lines[$i] = 0;
 		}
@@ -231,10 +231,10 @@ class ConsoleTable {
 
 	private function border($row) {
 		$line = ($this->h_lines[$row]) ? self::H_LINE : ' ';
-		$res = str_repeat(' ', $this->indent);
+		$res = \str_repeat(' ', $this->indent);
 		for ($i = 0; $i < $this->colCount; $i ++) {
 			$res .= $this->getBorderValue($row, $i);
-			$res .= str_repeat($line, $this->colWidths[$i]);
+			$res .= \str_repeat($line, $this->colWidths[$i]);
 		}
 		$res .= $this->getBorderValue($row, $this->colCount);
 		return ConsoleFormatter::colorize($res, $this->borderColor);
@@ -293,9 +293,9 @@ class ConsoleTable {
 		$colCount = 0;
 		$y = 0;
 		foreach ($this->datas as $row) {
-			if (is_array($row)) {
-				if (sizeof($row) > $colCount) {
-					$colCount = sizeof($row);
+			if (\is_array($row)) {
+				if (\count($row) > $colCount) {
+					$colCount = \count($row);
 				}
 				$index = 0;
 				$this->rowHeight[$y] = 1;
@@ -304,8 +304,8 @@ class ConsoleTable {
 						$col = \Ubiquity\utils\base\UDateTime::elapsed($col);
 					}
 					if (\is_scalar($col) || (\is_object($col) && \method_exists($col, '__toString'))) {
-						$lines = explode("\n", $col);
-						$size = sizeof($lines);
+						$lines = \explode("\n", $col);
+						$size = \count($lines);
 						if ($size > $this->rowHeight[$y]) {
 							$this->rowHeight[$y] = $size;
 						}
@@ -327,7 +327,7 @@ class ConsoleTable {
 			$y ++;
 		}
 		$this->colCount = $colCount;
-		$this->rowCount = sizeof($this->datas);
+		$this->rowCount = \count($this->datas);
 		return $this->colWidths;
 	}
 
