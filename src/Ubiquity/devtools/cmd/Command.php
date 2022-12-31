@@ -724,8 +724,14 @@ class Command {
 			'acl_init',
 			'acl:init',
 			'aclInit'
-		], [], [
-			'Initialize Acls' => 'Ubiquity aclInit'
+		], [
+			"m" => Parameter::create("models", "Generates ACL models", []),
+			"p" => Parameter::create("providers", "The providers to use (comma separated).", ['dao'], 'dao'),
+			"d" => Parameter::create("database", "The database offset.", [], 'default'),
+		], [
+			'Initialize Acls' => 'Ubiquity aclInit',
+			'Initialize Acls and create tables for AclDAOProvider' => 'Ubiquity aclInit -p=dao',
+			'Initialize Acls, create tables for acls db offset and models for AclDAOProvider' => 'Ubiquity aclInit -p=dao -m -d=acls',
 		], 'security');
 	}
 
