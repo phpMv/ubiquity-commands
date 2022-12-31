@@ -82,6 +82,10 @@ trait CmdTrait {
 		return $option;
 	}
 
+	protected static function hasOption($options, $option, $longOption): bool {
+		return isset($options[$option]) || isset($options[$longOption]);
+	}
+
 	protected static function requiredParam($what, $paramName) {
 		if ($what == null) {
 			ConsoleFormatter::showMessage($paramName . ' is a required parameter', 'error');
