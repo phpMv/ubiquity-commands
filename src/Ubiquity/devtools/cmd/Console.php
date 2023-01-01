@@ -125,4 +125,15 @@ class Console {
 			'z'
 		]) !== false;
 	}
+
+	/**
+	 * ReExecutes the loaded script.
+	 * @return void
+	 */
+	public static function reExecute(): void {
+		global $argv;
+		$argv[0]=\realpath($argv[0]);
+		\system(PHP_BINARY.' '.\implode(' ',$argv));
+		die();
+	}
 }
