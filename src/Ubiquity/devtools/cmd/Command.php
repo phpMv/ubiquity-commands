@@ -789,6 +789,20 @@ class Command {
 		], 'models');
 	}
 
+	public static function templateParser(){
+		return new Command("template-parse", "", "Parse a twig template to another template engine.", [
+			'template_parse',
+			'template:parse',
+			'template-parse'
+		], [
+			"e" => Parameter::create("engine", "The destination template engine.", [], 'latte'),
+			"d" => Parameter::create("destination", "The destination folder.", [], 'default view folder'),
+			'o' => Parameter::create('origin', 'The folder where the templates are located.', [], 'default view folder')
+		], [
+			'Migrate all templates in view folder to Latte template engine' => 'Ubiquity template-parse'
+		], 'views');
+	}
+
 	protected static function getCustomCommandInfos() {
 		$result = [];
 		$commands = self::getCustomCommands();
@@ -903,6 +917,7 @@ class Command {
 			self::displayAcls(),
 			self::newEncryptionKey(),
 			self::newDomain(),
+			self::templateParser(),
 			...self::getCustomCommandInfos()
 		];
 	}
