@@ -795,7 +795,7 @@ class Command {
 			'template:parse',
 			'template-parse'
 		], [
-			"e" => Parameter::create("engine", "The destination template engine.", [], 'latte'),
+			"e" => Parameter::create("engine", "The destination template engine.", ['twig','latte','plates'], 'latte'),
 			"d" => Parameter::create("destination", "The destination folder.", [], 'default view folder'),
 			'o' => Parameter::create('origin', 'The folder where the templates are located.', [], 'default view folder')
 		], [
